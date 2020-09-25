@@ -1,11 +1,11 @@
-package de.tum.in.www1.bamboo.server.parser;
+package de.tum.in.www1.staticCodeAnalysisParser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.tum.in.www1.bamboo.server.parser.domain.Report;
-import de.tum.in.www1.bamboo.server.parser.exception.ParserException;
-import de.tum.in.www1.bamboo.server.parser.exception.UnsupportedToolException;
-import de.tum.in.www1.bamboo.server.parser.strategy.ParserPolicy;
-import de.tum.in.www1.bamboo.server.parser.strategy.ParserStrategy;
+import de.tum.in.www1.staticCodeAnalysisParser.domain.Report;
+import de.tum.in.www1.staticCodeAnalysisParser.exception.ParserException;
+import de.tum.in.www1.staticCodeAnalysisParser.exception.UnsupportedToolException;
+import de.tum.in.www1.staticCodeAnalysisParser.strategy.ParserPolicy;
+import de.tum.in.www1.staticCodeAnalysisParser.strategy.ParserStrategy;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;

@@ -1,6 +1,6 @@
-package de.tum.in.www1.bamboo.server.parser.strategy;
+package de.tum.in.www1.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.www1.bamboo.server.parser.domain.Report;
+import de.tum.in.www1.staticCodeAnalysisParser.domain.Report;
 import nu.xom.Document;
 
 

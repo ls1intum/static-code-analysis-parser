@@ -1,4 +1,4 @@
-package de.tum.in.www1.bamboo.server.parser.exception;
+package de.tum.in.www1.staticCodeAnalysisParser.exception;
 
 public class ParserException extends Exception {
 

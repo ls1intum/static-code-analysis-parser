@@ -1,8 +1,8 @@
-package de.tum.in.www1.bamboo.server.parser.strategy;
+package de.tum.in.www1.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.www1.bamboo.server.parser.ReportParser;
-import de.tum.in.www1.bamboo.server.parser.domain.StaticCodeAnalysisTool;
-import de.tum.in.www1.bamboo.server.parser.exception.UnsupportedToolException;
+import de.tum.in.www1.staticCodeAnalysisParser.ReportParser;
+import de.tum.in.www1.staticCodeAnalysisParser.domain.StaticCodeAnalysisTool;
+import de.tum.in.www1.staticCodeAnalysisParser.exception.UnsupportedToolException;
 
 public class ParserPolicy {
 

@@ -1,4 +1,4 @@
-package de.tum.in.www1.bamboo.server.parser.domain;
+package de.tum.in.www1.staticCodeAnalysisParser.domain;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class Report {
     private List<Issue> issues;
 
     public Report(StaticCodeAnalysisTool tool) {
-        this.tool = tool;;
+        this.tool = tool;
     }
 
     public StaticCodeAnalysisTool getTool() {
