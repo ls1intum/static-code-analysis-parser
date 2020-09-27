@@ -25,6 +25,17 @@ jobs:
         java-version: '${{ env.java }}'
     - uses: actions/checkout@v2
     - name: Build
-      run: mvn package -Dmaven.test.skip=true
+      run: mvn -B package -Dmaven.test.skip=true
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '${{ env.java }}'
+      - uses: actions/checkout@v2
+      - name: Build
+        run: mvn -B test
 
 
