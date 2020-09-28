@@ -32,6 +32,13 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build
       run: mvn -B package -Dmaven.test.skip=true
+    - name: Upload artifact
+      if: ${{ success() }}
+      run: mkdir staging && cp target/*.jar staging
+      uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: staging
 
   test:
     runs-on: ubuntu-latest
