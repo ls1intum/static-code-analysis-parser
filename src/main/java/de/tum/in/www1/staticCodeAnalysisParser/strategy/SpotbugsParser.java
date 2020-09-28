@@ -10,7 +10,7 @@ import nu.xom.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotbugsParser implements ParserStrategy {
+class SpotbugsParser implements ParserStrategy {
 
     private static final String BUGINSTANCE_ELEMENT = "BugInstance";
     private static final String BUGINSTANCE_ATT_TYPE = "type";

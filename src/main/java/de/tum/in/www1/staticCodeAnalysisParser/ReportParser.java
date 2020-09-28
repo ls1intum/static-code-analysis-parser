@@ -3,25 +3,16 @@ package de.tum.in.www1.staticCodeAnalysisParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tum.in.www1.staticCodeAnalysisParser.domain.Report;
 import de.tum.in.www1.staticCodeAnalysisParser.exception.ParserException;
-import de.tum.in.www1.staticCodeAnalysisParser.exception.UnsupportedToolException;
-import de.tum.in.www1.staticCodeAnalysisParser.strategy.ParserPolicy;
-import de.tum.in.www1.staticCodeAnalysisParser.strategy.ParserStrategy;
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.ParsingException;
+import de.tum.in.www1.staticCodeAnalysisParser.strategy.ParserContext;
 
 import java.io.File;
-import java.io.IOException;
 
-// TODO: Split this class into a library API and a proper strategy context
+/**
+ * Public API for parsing of static code analysis reports
+ */
 public class ReportParser {
 
-    ParserStrategy parserStrategy;
-    ParserPolicy parserPolicy = new ParserPolicy(this);
-
-    public void setParserStrategy(ParserStrategy parserStrategy) {
-        this.parserStrategy = parserStrategy;
-    }
+    private ParserContext context = new ParserContext();
 
     /**
      * Transform a given static code analysis report into a JSON representation.
@@ -34,22 +25,19 @@ public class ReportParser {
      */
     public String transformToJSONReport(File file, String tool) throws ParserException {
         try {
-            Report report = getReport(file, tool);
+            if (file == null) {
+                throw new IllegalArgumentException("File must not be null");
+            }
+            if (tool == null) {
+                throw new IllegalArgumentException("Tool String must not be null");
+            }
+
+            Report report = context.getReport(file, tool);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(report);
         }
         catch (Exception e) {
             throw new ParserException(e.getMessage(), e);
         }
-    }
-
-    private Report getReport(File file, String tool) throws UnsupportedToolException, ParsingException, IOException {
-        // Configure the strategy given the name of the tool
-        parserPolicy.configure(tool);
-
-        // Build the DOM and parse the document using the configured strategy
-        Builder parser = new Builder();
-        Document doc = parser.build(file);
-        return parserStrategy.parse(doc);
     }
 }

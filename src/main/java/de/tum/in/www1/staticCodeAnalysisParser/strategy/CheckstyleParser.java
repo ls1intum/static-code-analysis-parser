@@ -9,7 +9,7 @@ import nu.xom.Element;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckstyleParser implements ParserStrategy {
+class CheckstyleParser implements ParserStrategy {
 
     private static final String FILE_TAG = "file";
     private static final String FILE_ATT_NAME = "name";

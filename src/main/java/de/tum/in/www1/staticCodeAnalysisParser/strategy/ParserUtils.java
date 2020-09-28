@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * Utility class providing shared functionality for report parsing
  */
-public class ParserUtils {
+class ParserUtils {
 
     /**
      * Extracts and parses an attribute to an int. Defaults to 0 if parsing fails.

@@ -9,7 +9,7 @@ import nu.xom.Element;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PMDParser implements ParserStrategy {
+class PMDParser implements ParserStrategy {
 
     // XSD for PMD XML reports: https://github.com/pmd/pmd/blob/master/pmd-core/src/main/resources/report_2_0_0.xsd
     private static final String FILE_TAG = "file";

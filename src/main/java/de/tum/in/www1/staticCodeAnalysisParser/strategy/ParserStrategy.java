@@ -4,7 +4,7 @@ import de.tum.in.www1.staticCodeAnalysisParser.domain.Report;
 import nu.xom.Document;
 
 
-public interface ParserStrategy {
+interface ParserStrategy {
 
     /**
      * Parse a static code analysis report into a common Java representation.
