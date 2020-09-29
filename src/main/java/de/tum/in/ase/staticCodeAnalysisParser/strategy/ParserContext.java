@@ -1,7 +1,7 @@
-package de.tum.in.www1.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.www1.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.www1.staticCodeAnalysisParser.exception.UnsupportedToolException;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
+import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;

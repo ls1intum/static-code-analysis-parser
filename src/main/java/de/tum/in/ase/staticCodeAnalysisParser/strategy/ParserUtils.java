@@ -1,4 +1,4 @@
-package de.tum.in.www1.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
 import nu.xom.Element;
 
