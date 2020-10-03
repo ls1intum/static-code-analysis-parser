@@ -1,6 +1,7 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.StaticCodeAnalysisTool;
+import nu.xom.Document;
+
 import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
 
 class ParserPolicy {
@@ -12,24 +13,15 @@ class ParserPolicy {
     }
 
     /**
-     * Selects the appropriate parsing strategy.
+     * Selects the appropriate parsing strategy by looking for the identifying tag of a static code analysis tool
      *
-     * @param tool String identifying the static code analysis tool
+     * @param document static code analysis xml report
      * @throws UnsupportedToolException - If the specified tool is not supported
      */
-    public void configure(String tool) {
-        // TODO: Inspect the document (identifying unique nodes) to select the appropriate strategy
-        if (StaticCodeAnalysisTool.SPOTBUGS.name().equalsIgnoreCase(tool)) {
-            context.setParserStrategy(new SpotbugsParser());
-        }
-        else if (StaticCodeAnalysisTool.CHECKSTYLE.name().equalsIgnoreCase(tool)) {
-            context.setParserStrategy(new CheckstyleParser());
-        }
-        else if (StaticCodeAnalysisTool.PMD.name().equalsIgnoreCase(tool)) {
-            context.setParserStrategy(new PMDParser());
-        }
-        else {
-            throw new UnsupportedToolException("Report parsing for tool " + tool + " is not supported");
-        }
+    public void configure(Document document) {
+        String rootTag = document.getRootElement().getLocalName();
+        StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByIdentifierTag(rootTag)
+                .orElseThrow(() -> new UnsupportedToolException("Tool for identifying tag " + rootTag + " not found"));
+        context.setParserStrategy(tool.getStrategy());
     }
 }

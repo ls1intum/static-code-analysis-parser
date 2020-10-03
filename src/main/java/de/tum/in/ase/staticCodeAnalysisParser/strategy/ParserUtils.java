@@ -1,8 +1,8 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import nu.xom.Element;
-
 import java.io.File;
+
+import nu.xom.Element;
 
 /**
  * Utility class providing shared functionality for report parsing

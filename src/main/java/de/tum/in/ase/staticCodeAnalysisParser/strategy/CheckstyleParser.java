@@ -1,13 +1,13 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Issue;
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.ase.staticCodeAnalysisParser.domain.StaticCodeAnalysisTool;
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Document;
 import nu.xom.Element;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Issue;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
 
 class CheckstyleParser implements ParserStrategy {
 

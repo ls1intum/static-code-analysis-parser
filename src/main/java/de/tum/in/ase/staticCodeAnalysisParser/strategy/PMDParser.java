@@ -1,21 +1,19 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Issue;
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.ase.staticCodeAnalysisParser.domain.StaticCodeAnalysisTool;
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Document;
 import nu.xom.Element;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Issue;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
 
 class PMDParser implements ParserStrategy {
 
     // XSD for PMD XML reports: https://github.com/pmd/pmd/blob/master/pmd-core/src/main/resources/report_2_0_0.xsd
     private static final String FILE_TAG = "file";
     private static final String FILE_ATT_NAME = "name";
-    private static final String VIOLATION_ATT_CLASS = "class";
-    private static final String VIOLATION_ATT_PACKAGE = "package";
     private static final String VIOLATION_ATT_RULE = "rule";
     private static final String VIOLATION_ATT_RULESET = "ruleset";
     private static final String VIOLATION_ATT_PRIORITY = "priority";

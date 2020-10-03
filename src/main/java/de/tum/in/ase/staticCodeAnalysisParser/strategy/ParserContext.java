@@ -1,13 +1,14 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
+import java.io.File;
+import java.io.IOException;
+
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;
 
-import java.io.File;
-import java.io.IOException;
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
+import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
 
 public class ParserContext {
 
@@ -18,13 +19,11 @@ public class ParserContext {
         this.parserStrategy = parserStrategy;
     }
 
-    public Report getReport(File file, String tool) throws UnsupportedToolException, ParsingException, IOException {
-        // Configure the strategy given the name of the tool
-        parserPolicy.configure(tool);
-
+    public Report getReport(File file) throws UnsupportedToolException, ParsingException, IOException {
         // Build the DOM and parse the document using the configured strategy
         Builder parser = new Builder();
         Document doc = parser.build(file);
+        parserPolicy.configure(doc);
         return parserStrategy.parse(doc);
     }
 }

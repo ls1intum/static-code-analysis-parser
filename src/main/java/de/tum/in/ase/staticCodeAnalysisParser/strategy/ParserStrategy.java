@@ -1,7 +1,8 @@
 package de.tum.in.ase.staticCodeAnalysisParser.strategy;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
 import nu.xom.Document;
+
+import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
 
 
 interface ParserStrategy {
