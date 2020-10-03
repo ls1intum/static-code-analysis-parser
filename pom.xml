@@ -129,7 +129,7 @@
           <version>${spotless.version}</version>
           <configuration>
             <!-- limit format enforcement to just the files changed by this feature branch -->
-            <ratchetFrom>master</ratchetFrom>
+            <ratchetFrom>origin/master</ratchetFrom>
             <!-- define a language-specific format -->
             <java>
               <!-- These are the defaults, you can override if you want -->

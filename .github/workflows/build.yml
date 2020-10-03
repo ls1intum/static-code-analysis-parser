@@ -24,6 +24,7 @@ jobs:
       with:
         java-version: '${{ env.java }}'
     - uses: actions/checkout@v2
+      - fetch-depth: 0
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
