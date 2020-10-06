@@ -32,7 +32,7 @@
 
   <scm>
     <connection>scm:git:https://github.com/ls1intum/static-code-analysis-parser.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:ls1intum/static-code-analysis-parser.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/ls1intum/static-code-analysis-parser.git</developerConnection>
     <url>https://github.com/ls1intum/static-code-analysis-parser</url>
   </scm>
 
