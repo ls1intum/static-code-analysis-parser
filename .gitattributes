@@ -1,0 +1,6 @@
+# Autodetect text files
+* text=auto eol=lf
+
+# Definitively text files
+*.txt text
+*.java text

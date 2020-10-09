@@ -1,13 +1,13 @@
-package de.tum.in.www1.staticCodeAnalysisParser.strategy;
-
-import nu.xom.Element;
+package de.tum.in.ase.parser.strategy;
 
 import java.io.File;
+
+import nu.xom.Element;
 
 /**
  * Utility class providing shared functionality for report parsing
  */
-public class ParserUtils {
+class ParserUtils {
 
     /**
      * Extracts and parses an attribute to an int. Defaults to 0 if parsing fails.
