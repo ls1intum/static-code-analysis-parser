@@ -15,7 +15,7 @@ public class ParserContext {
     private ParserStrategy parserStrategy;
     private ParserPolicy parserPolicy = new ParserPolicy(this);
 
-    void setParserStrategy(ParserStrategy parserStrategy) {
+    public void setParserStrategy(ParserStrategy parserStrategy) {
         this.parserStrategy = parserStrategy;
     }
 
