@@ -1,12 +1,12 @@
-package de.tum.in.ase.staticCodeAnalysisParser;
+package de.tum.in.ase.parser;
 
 import java.io.File;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.ase.staticCodeAnalysisParser.exception.ParserException;
-import de.tum.in.ase.staticCodeAnalysisParser.strategy.ParserContext;
+import de.tum.in.ase.parser.domain.Report;
+import de.tum.in.ase.parser.exception.ParserException;
+import de.tum.in.ase.parser.strategy.ParserContext;
 
 /**
  * Public API for parsing of static code analysis reports

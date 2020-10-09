@@ -1,4 +1,4 @@
-package de.tum.in.ase.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.parser.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Issue;
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
 
 class SpotbugsParser implements ParserStrategy {
 

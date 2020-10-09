@@ -1,8 +1,8 @@
-package de.tum.in.ase.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.parser.strategy;
 
 import nu.xom.Document;
 
-import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
+import de.tum.in.ase.parser.exception.UnsupportedToolException;
 
 class ParserPolicy {
 

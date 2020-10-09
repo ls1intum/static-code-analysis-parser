@@ -1,4 +1,4 @@
-package de.tum.in.ase.staticCodeAnalysisParser.domain;
+package de.tum.in.ase.parser.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

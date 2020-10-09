@@ -1,4 +1,4 @@
-package de.tum.in.ase.staticCodeAnalysisParser;
+package de.tum.in.ase.parser;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

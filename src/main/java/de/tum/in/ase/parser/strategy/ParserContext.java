@@ -1,4 +1,4 @@
-package de.tum.in.ase.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.parser.strategy;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;
 
-import de.tum.in.ase.staticCodeAnalysisParser.domain.Report;
-import de.tum.in.ase.staticCodeAnalysisParser.exception.UnsupportedToolException;
+import de.tum.in.ase.parser.domain.Report;
+import de.tum.in.ase.parser.exception.UnsupportedToolException;
 
 public class ParserContext {
 

@@ -1,8 +1,8 @@
-package de.tum.in.ase.staticCodeAnalysisParser.domain;
+package de.tum.in.ase.parser.domain;
 
 import java.util.List;
 
-import de.tum.in.ase.staticCodeAnalysisParser.strategy.StaticCodeAnalysisTool;
+import de.tum.in.ase.parser.strategy.StaticCodeAnalysisTool;
 
 public class Report {
 

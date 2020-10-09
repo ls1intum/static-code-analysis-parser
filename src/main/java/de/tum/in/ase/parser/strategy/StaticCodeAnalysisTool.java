@@ -1,4 +1,4 @@
-package de.tum.in.ase.staticCodeAnalysisParser.strategy;
+package de.tum.in.ase.parser.strategy;
 
 import java.util.Objects;
 import java.util.Optional;
