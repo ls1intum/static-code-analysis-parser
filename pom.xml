@@ -68,6 +68,7 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson-databind.version}</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>xom</groupId>
