@@ -25,3 +25,6 @@ hs_err_pid*
 #IDE
 .idea
 *.iml
+
+#Build output
+target
