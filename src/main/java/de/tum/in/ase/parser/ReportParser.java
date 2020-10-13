@@ -37,4 +37,23 @@ public class ReportParser {
             throw new ParserException(e.getMessage(), e);
         }
     }
+
+    /**
+     * Transform a given static code analysis report into a plain Java object.
+     *
+     * @param file Reference to the static code analysis report
+     * @return Static code analysis report represented as a plain Java object
+     * @throws ParserException - If any error occurs parsing the report
+     */
+    public Report transformToReport(File file) throws ParserException {
+        try {
+            if (file == null) {
+                throw new IllegalArgumentException("File must not be null");
+            }
+            return context.getReport(file);
+        }
+        catch (Exception e) {
+            throw new ParserException(e.getMessage(), e);
+        }
+    }
 }
