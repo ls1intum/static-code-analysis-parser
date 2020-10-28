@@ -83,6 +83,6 @@ class PMDCPDParser implements ParserStrategy {
     }
 
     private String createMessage(int duplicatedLines, int duplicatedTokens, String duplicationHash) {
-        return "Code duplication (" + duplicationHash + ") of " + duplicatedLines + " lines (" + duplicatedTokens + " tokens) detected";
+        return "Code duplication (" + duplicationHash + ") of " + duplicatedLines + " lines (" + duplicatedTokens + " tokens) detected.";
     }
 }
