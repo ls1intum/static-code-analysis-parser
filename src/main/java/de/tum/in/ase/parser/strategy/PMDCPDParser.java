@@ -26,7 +26,7 @@ class PMDCPDParser implements ParserStrategy {
 
     @Override
     public Report parse(Document doc) {
-        Report report = new Report(StaticCodeAnalysisTool.PMD);
+        Report report = new Report(StaticCodeAnalysisTool.PMD_CPD);
         List<Issue> allIssues = new ArrayList<>();
         Element root = doc.getRootElement();
 
