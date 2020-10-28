@@ -145,6 +145,30 @@
             </java>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotless.version}</version>
+          <configuration>
+            <!-- limit format enforcement to just the files changed by this feature branch -->
+            <ratchetFrom>origin/master</ratchetFrom>
+            <!-- define a language-specific format -->
+            <java>
+              <!-- These are the defaults, you can override if you want -->
+              <includes>
+                <include>src/main/java/**/*.java</include>
+                <include>src/test/java/**/*.java</include>
+              </includes>
+              <importOrder>  <!-- or a custom ordering -->
+                <order>java,javax,org,com,de</order>
+              </importOrder>
+              <removeUnusedImports/>
+              <eclipse>
+                <file>${basedir}/spotless-style.xml</file> <!-- optional -->
+              </eclipse>
+            </java>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
