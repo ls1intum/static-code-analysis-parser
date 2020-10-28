@@ -74,7 +74,7 @@ class PMDCPDParser implements ParserStrategy {
         // Add all file locations of the same duplication
         for (Issue issue : issues) {
             String filename = extractFilename(issue.getFilePath());
-            builder.append("\n").append(counter).append(") ").append(filename).append(":");
+            builder.append("\n").append(counter).append(". ").append(filename).append(":");
             builder.append(issue.getStartLine()).append("-").append(issue.getEndLine());
             counter++;
         }
