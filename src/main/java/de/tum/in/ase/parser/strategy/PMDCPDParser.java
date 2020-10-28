@@ -11,7 +11,8 @@ import java.util.List;
 
 class PMDCPDParser implements ParserStrategy {
 
-    private static final String PMD_CPD_RULE = "PMD CPD";
+    // Category/Rule which can be used by clients for further processing
+    private static final String CPD_CATEGORY = "Copy/Paste Detection";
 
     private static final String DUPLICATION_TAG = "duplication";
     private static final String DUPLICATION_ATT_LINES = "lines";
@@ -36,8 +37,8 @@ class PMDCPDParser implements ParserStrategy {
             // Create an issue for each found duplication
             for (Element file : duplication.getChildElements(FILE_TAG, duplication.getNamespaceURI())) {
                 Issue issue = new Issue();
-                issue.setCategory(Constants.CPD_CATEGORY);
-                issue.setRule(PMD_CPD_RULE);
+                issue.setCategory(CPD_CATEGORY);
+                issue.setRule(CPD_CATEGORY);
                 String unixPath = ParserUtils.transformToUnixPath(file.getAttributeValue(FILE_ATT_PATH));
                 issue.setFilePath(unixPath);
                 issue.setStartLine(ParserUtils.extractInt(file, FILE_ATT_STARTLINE));
