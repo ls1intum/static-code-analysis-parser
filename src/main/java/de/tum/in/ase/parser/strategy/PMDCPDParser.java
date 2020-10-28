@@ -4,13 +4,9 @@ import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 import nu.xom.Document;
 import nu.xom.Element;
-import nu.xom.Elements;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 class PMDCPDParser implements ParserStrategy {
@@ -19,8 +15,6 @@ class PMDCPDParser implements ParserStrategy {
 
     private static final String DUPLICATION_TAG = "duplication";
     private static final String DUPLICATION_ATT_LINES = "lines";
-    private static final String DUPLICATION_ATT_TOKENS = "tokens";
-    private static final String CODEFRAGMENT_TAG = "codefragment";
     private static final String FILE_TAG = "file";
     private static final String FILE_ATT_PATH = "path";
     private static final String FILE_ATT_STARTLINE = "line";
@@ -31,20 +25,13 @@ class PMDCPDParser implements ParserStrategy {
     @Override
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.PMD);
-        List<Issue> issues = new ArrayList<>();
+        List<Issue> allIssues = new ArrayList<>();
         Element root = doc.getRootElement();
 
         // Iterate over all <duplication> elements
         for (Element duplication : root.getChildElements(DUPLICATION_TAG)) {
+            List<Issue> issuesForDuplication = new ArrayList<>();
             int lines = ParserUtils.extractInt(duplication, DUPLICATION_ATT_LINES);
-            int tokens = ParserUtils.extractInt(duplication, DUPLICATION_ATT_TOKENS);
-
-            Elements codeFragments = duplication.getChildElements(CODEFRAGMENT_TAG);
-            String duplicatedCode = codeFragments.size() > 0 ? codeFragments.get(0).getValue() : "";
-            String hash = createReadableHash(duplicatedCode);
-
-            // The hash of the code duplication enables the grouping of
-            String message = createMessage(lines, tokens, hash);
 
             // Create an issue for each found duplication
             for (Element file : duplication.getChildElements(FILE_TAG, duplication.getNamespaceURI())) {
@@ -57,32 +44,44 @@ class PMDCPDParser implements ParserStrategy {
                 issue.setEndLine(ParserUtils.extractInt(file, FILE_ATT_ENDLINE));
                 issue.setStartColumn(ParserUtils.extractInt(file, FILE_ATT_STARTCOLUMN));
                 issue.setEndColumn(ParserUtils.extractInt(file, FILE_ATT_ENDCOLUMN));
-                issue.setMessage(message);
+
+                issuesForDuplication.add(issue);
             }
+
+            // Create a message referencing all locations where the same duplication was found
+            String message = createMessage(lines, issuesForDuplication);
+            issuesForDuplication.forEach(issue -> issue.setMessage(message));
+
+            // Add issues to report
+            allIssues.addAll(issuesForDuplication);
         }
-        report.setIssues(issues);
+        report.setIssues(allIssues);
         return report;
     }
 
     /**
-     * Creates a MD5 hash of a String input and transforms it into a human readable ASCII characters using Base64.
-     * If the MD5 algorithm is not available, the hash will be created by the {@link String#hashCode()}}.
+     * Creates a message showing the file locations of the duplication.
      *
-     * @param input String to be hashed
-     * @return hashed String in human readable form
+     * @param duplicatedLines duplicated number of lines
+     * @param issues issues created for the same duplication
+     * @return duplication message
      */
-    private String createReadableHash(String input) {
-        try {
-            byte[] digest = MessageDigest.getInstance("MD5").digest(input.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().withoutPadding().encodeToString(digest);
+    private String createMessage(int duplicatedLines, List<Issue> issues) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Code duplication of ").append(duplicatedLines).append(" lines in the following files:");
+
+        int counter = 1;
+        // Add all file locations of the same duplication
+        for (Issue issue : issues) {
+            String filename = extractFilename(issue.getFilePath());
+            builder.append("\n").append(counter).append(") ").append(filename).append(":");
+            builder.append(issue.getStartLine()).append("-").append(issue.getEndLine());
+            counter++;
         }
-        catch (NoSuchAlgorithmException e) {
-            // Fallback
-            return String.valueOf(input.hashCode());
-        }
+        return builder.toString();
     }
 
-    private String createMessage(int duplicatedLines, int duplicatedTokens, String duplicationHash) {
-        return "Code duplication (" + duplicationHash + ") of " + duplicatedLines + " lines (" + duplicatedTokens + " tokens) detected.";
+    private String extractFilename(String unixPath) {
+        return new File(unixPath).getName();
     }
 }
