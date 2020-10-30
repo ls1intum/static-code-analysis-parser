@@ -6,7 +6,8 @@ import java.util.Optional;
 public enum StaticCodeAnalysisTool {
     SPOTBUGS("BugCollection", new SpotbugsParser()),
     CHECKSTYLE("checkstyle", new CheckstyleParser()),
-    PMD("pmd", new PMDParser());
+    PMD("pmd", new PMDParser()),
+    PMD_CPD("pmd-cpd", new PMDCPDParser());
 
     private String identifierTag;
     private ParserStrategy strategy;
