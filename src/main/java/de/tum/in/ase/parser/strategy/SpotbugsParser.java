@@ -1,7 +1,9 @@
 package de.tum.in.ase.parser.strategy;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -12,6 +14,8 @@ import de.tum.in.ase.parser.domain.Report;
 
 class SpotbugsParser implements ParserStrategy {
 
+    private static final String PROJECT_ELEMENT = "Project";
+    private static final String SOURCE_DIRECTORY_ELEMENT = "SrcDir";
     private static final String BUGINSTANCE_ELEMENT = "BugInstance";
     private static final String BUGINSTANCE_ATT_TYPE = "type";
     private static final String BUGINSTANCE_ATT_CATEGORY = "category";
@@ -28,6 +32,17 @@ class SpotbugsParser implements ParserStrategy {
         // Element BugCollection
         Element root = doc.getRootElement();
 
+        String sourceDirectory = Optional.ofNullable(root.getFirstChildElement(PROJECT_ELEMENT))
+                .flatMap(p -> Optional.ofNullable(p.getFirstChildElement(SOURCE_DIRECTORY_ELEMENT)))
+                .map(Element::getValue)
+                .map(srcDir -> {
+                    if (!srcDir.endsWith(File.separator)) {
+                        return srcDir + File.separator;
+                    } else {
+                        return srcDir;
+                    }
+                }).orElse("");
+
         // Iterate over <BugInstance> elements
         for (Element bugInstance : root.getChildElements(BUGINSTANCE_ELEMENT)) {
             Issue issue = new Issue();
@@ -41,8 +56,7 @@ class SpotbugsParser implements ParserStrategy {
             Elements sourceLines = bugInstance.getChildElements(SOURCELINE_ELEMENT);
             if (sourceLines.size() > 0) {
                 Element sourceLine = sourceLines.get(0);
-                // The sourcePath begins with the package name so we don't need to shorten it
-                String unixPath = ParserUtils.transformToUnixPath(sourceLine.getAttributeValue(SOURCELINE_ATT_SOURCEPATH));
+                String unixPath = ParserUtils.transformToUnixPath(sourceDirectory + sourceLine.getAttributeValue(SOURCELINE_ATT_SOURCEPATH));
                 issue.setFilePath(unixPath);
                 // Set endLine by duplicating the startLine. Spotbugs does not support a endLine
                 int startLine = ParserUtils.extractInt(sourceLine, SOURCELINE_ATT_START);
