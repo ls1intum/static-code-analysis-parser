@@ -1,7 +1,9 @@
 package de.tum.in.ase.parser.strategy;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -30,10 +32,16 @@ class SpotbugsParser implements ParserStrategy {
         // Element BugCollection
         Element root = doc.getRootElement();
 
-        String sourceDirectory = root.getFirstChildElement(PROJECT_ELEMENT).getFirstChildElement(SOURCE_DIRECTORY_ELEMENT).getValue();
-        if (!sourceDirectory.endsWith("/")) {
-            sourceDirectory += "/";
-        }
+        String sourceDirectory = Optional.ofNullable(root.getFirstChildElement(PROJECT_ELEMENT))
+                .flatMap(p -> Optional.ofNullable(p.getFirstChildElement(SOURCE_DIRECTORY_ELEMENT)))
+                .map(Element::getValue)
+                .map(srcDir -> {
+                    if (!srcDir.endsWith(File.separator)) {
+                        return srcDir + File.separator;
+                    } else {
+                        return srcDir;
+                    }
+                }).orElse("");
 
         // Iterate over <BugInstance> elements
         for (Element bugInstance : root.getChildElements(BUGINSTANCE_ELEMENT)) {
