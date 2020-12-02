@@ -5,10 +5,11 @@ import nu.xom.Document;
 import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 
-class CheckstyleParser extends CheckstyleFormatParser {
+class SwiftLintParser extends CheckstyleFormatParser {
 
+    @Override
     public Report parse(Document doc) {
-        Report report = new Report(StaticCodeAnalysisTool.CHECKSTYLE);
+        Report report = new Report(StaticCodeAnalysisTool.SWIFTLINT);
         extractIssues(doc, report);
         return report;
     }
@@ -32,13 +33,10 @@ class CheckstyleParser extends CheckstyleFormatParser {
             issue.setCategory(errorSource);
             return;
         }
-        String rule = errorSourceSegments[noOfSegments - 1];
-        String category = errorSourceSegments[noOfSegments - 2];
 
-        // Check if the rule has a category
-        if (category.equals(CATEGORY_DELIMITER)) {
-            category = CATEGORY_MISCELLANEOUS;
-        }
+        String rule = errorSourceSegments[noOfSegments - 1]; // e.g. trailing_semicolon
+        String category = errorSourceSegments[noOfSegments - 1].split("_")[0]; // e.g. trailing
+
         issue.setRule(rule);
         issue.setCategory(category);
     }
