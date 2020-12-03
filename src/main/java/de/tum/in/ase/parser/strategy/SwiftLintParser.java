@@ -18,10 +18,7 @@ class SwiftLintParser extends CheckstyleFormatParser {
      * Extracts and sets the rule and the category given the check's package name.
      *
      * @param issue issue under construction
-     * @param errorSource package like com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck. The first
-     *                    segment after '.checks.' denotes the category and the segment after the rule. Some rules do
-     *                    not belong to a category e.g. com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck.
-     *                    Such rule will be grouped under {@link #CATEGORY_MISCELLANEOUS}.
+     * @param errorSource package like swiftlint.rules.trailing_semicolon
      */
     @Override
     protected void extractRuleAndCategory(Issue issue, String errorSource) {

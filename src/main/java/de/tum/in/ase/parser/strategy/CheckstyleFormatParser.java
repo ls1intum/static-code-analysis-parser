@@ -11,18 +11,18 @@ import de.tum.in.ase.parser.domain.Report;
 
 public abstract class CheckstyleFormatParser implements ParserStrategy {
 
-    static final String FILE_TAG = "file";
-    static final String FILE_ATT_NAME = "name";
-    static final String ERROR_ATT_SOURCE = "source";
-    static final String ERROR_ATT_SEVERITY = "severity";
-    static final String ERROR_ATT_MESSAGE = "message";
-    static final String ERROR_ATT_LINENUMBER = "line";
-    static final String ERROR_ATT_COLUMN = "column";
+    protected static final String FILE_TAG = "file";
+    protected static final String FILE_ATT_NAME = "name";
+    protected static final String ERROR_ATT_SOURCE = "source";
+    protected static final String ERROR_ATT_SEVERITY = "severity";
+    protected static final String ERROR_ATT_MESSAGE = "message";
+    protected static final String ERROR_ATT_LINENUMBER = "line";
+    protected static final String ERROR_ATT_COLUMN = "column";
 
     // The packages rooted at checks denote the category and rule
-    static final String CATEGORY_DELIMITER = "checks";
+    protected static final String CATEGORY_DELIMITER = "checks";
     // Some rules don't belong to a category. We group them under this identifier.
-    static final String CATEGORY_MISCELLANEOUS = "miscellaneous";
+    protected static final String CATEGORY_MISCELLANEOUS = "miscellaneous";
 
     protected static String getProgrammingLanguage(String path) {
         String extension = path.substring(path.lastIndexOf("."));
@@ -63,5 +63,5 @@ public abstract class CheckstyleFormatParser implements ParserStrategy {
         report.setIssues(issues);
     }
 
-    abstract void extractRuleAndCategory(Issue issue, String errorSource);
+    protected abstract void extractRuleAndCategory(Issue issue, String errorSource);
 }
