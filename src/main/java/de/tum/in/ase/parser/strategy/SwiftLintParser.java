@@ -32,7 +32,7 @@ class SwiftLintParser extends CheckstyleFormatParser {
         }
 
         String rule = errorSourceSegments[noOfSegments - 1]; // e.g. trailing_semicolon
-        String category = errorSourceSegments[noOfSegments - 1].split("_")[0]; // e.g. trailing
+        String category = "swiftLint";
 
         issue.setRule(rule);
         issue.setCategory(category);
