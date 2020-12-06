@@ -24,13 +24,6 @@ class SwiftLintParser extends CheckstyleFormatParser {
     protected void extractRuleAndCategory(Issue issue, String errorSource) {
         String[] errorSourceSegments = errorSource.split("\\.");
         int noOfSegments = errorSourceSegments.length;
-
-        // Should never happen but check for robustness
-        if (noOfSegments < 2) {
-            issue.setCategory(errorSource);
-            return;
-        }
-
         String rule = errorSourceSegments[noOfSegments - 1]; // e.g. trailing_semicolon
         String category = "swiftLint";
 
