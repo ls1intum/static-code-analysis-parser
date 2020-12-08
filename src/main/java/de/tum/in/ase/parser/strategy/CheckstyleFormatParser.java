@@ -19,11 +19,6 @@ public abstract class CheckstyleFormatParser implements ParserStrategy {
     protected static final String ERROR_ATT_LINENUMBER = "line";
     protected static final String ERROR_ATT_COLUMN = "column";
 
-    // The packages rooted at checks denote the category and rule
-    protected static final String CATEGORY_DELIMITER = "checks";
-    // Some rules don't belong to a category. We group them under this identifier.
-    protected static final String CATEGORY_MISCELLANEOUS = "miscellaneous";
-
     protected static String getProgrammingLanguage(String path) {
         String extension = path.substring(path.lastIndexOf("."));
         return extension.substring(1);

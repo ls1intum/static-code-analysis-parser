@@ -7,6 +7,11 @@ import de.tum.in.ase.parser.domain.Report;
 
 class CheckstyleParser extends CheckstyleFormatParser {
 
+    // The packages rooted at checks denote the category and rule
+    private static final String CATEGORY_DELIMITER = "checks";
+    // Some rules don't belong to a category. We group them under this identifier.
+    private static final String CATEGORY_MISCELLANEOUS = "miscellaneous";
+
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.CHECKSTYLE);
         extractIssues(doc, report);
