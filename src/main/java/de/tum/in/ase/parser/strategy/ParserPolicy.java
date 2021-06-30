@@ -8,28 +8,23 @@ import de.tum.in.ase.parser.exception.UnsupportedToolException;
 
 class ParserPolicy {
 
-    private ParserContext context;
-
-    public ParserPolicy(ParserContext context) {
-        this.context = context;
-    }
-
     /**
      * Selects the appropriate parsing strategy by looking for the identifying tag of a static code analysis tool
      *
      * @param document static code analysis xml report
+     * @return the parser strategy
      * @throws UnsupportedToolException - If the specified tool is not supported
      */
-    public void configure(Document document) {
+    public ParserStrategy configure(Document document) {
         String rootTag = document.getRootElement().getLocalName();
         StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByIdentifierTag(rootTag)
                 .orElseThrow(() -> new UnsupportedToolException("Tool for identifying tag " + rootTag + " not found"));
 
         if (tool.getIdentifyingTag().equals("checkstyle")) {
             // Check for different checkstyle parsers
-            setCorrectCheckstyleParser(document);
+            return getCorrectCheckstyleParser(document);
         } else {
-            context.setParserStrategy(tool.getStrategy());
+            return tool.getStrategy();
         }
     }
 
@@ -38,8 +33,9 @@ class ParserPolicy {
      * and set the parser accordingly
      *
      * @param document static code analysis xml report
+     * @return the parser strategy
      */
-    private void setCorrectCheckstyleParser(Document document) {
+    private ParserStrategy getCorrectCheckstyleParser(Document document) {
         Element root = document.getRootElement();
         String language;
         Elements fileElements = root.getChildElements(CheckstyleFormatParser.FILE_TAG);
@@ -48,13 +44,13 @@ class ParserPolicy {
             String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttributeValue(CheckstyleFormatParser.FILE_ATT_NAME));
             language = CheckstyleFormatParser.getProgrammingLanguage(unixPath);
             if (language.equals("swift")) {
-                context.setParserStrategy(StaticCodeAnalysisTool.SWIFTLINT.getStrategy());
+                return StaticCodeAnalysisTool.SWIFTLINT.getStrategy();
             } else {
-                context.setParserStrategy(StaticCodeAnalysisTool.CHECKSTYLE.getStrategy());
+                return StaticCodeAnalysisTool.CHECKSTYLE.getStrategy();
             }
         } else {
             // default checkstyle tool
-            context.setParserStrategy(StaticCodeAnalysisTool.CHECKSTYLE.getStrategy());
+            return StaticCodeAnalysisTool.CHECKSTYLE.getStrategy();
         }
     }
 }
