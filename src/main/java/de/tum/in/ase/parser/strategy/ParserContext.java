@@ -16,7 +16,7 @@ import de.tum.in.ase.parser.utils.FileUtils;
 public class ParserContext {
 
     // Reports that are bigger then the threshold will not be parsed
-    // and an issue will be generated. The unit is in bytes.
+    // and an issue will be generated. The unit is in megabytes.
     private final int staticCodeAnalysisReportFilesizeLimit = 1;
 
     /**
