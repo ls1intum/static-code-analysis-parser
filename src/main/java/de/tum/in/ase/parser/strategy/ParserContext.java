@@ -29,6 +29,10 @@ public class ParserContext {
      * @throws IOException if the file could not be read
      */
     public Report getReport(File file) throws UnsupportedToolException, ParsingException, IOException {
+
+        // TODO: replace the XML library with the one used in Artemis XMLFileUtils
+        // TODO: make sure to parse xml files and do not even try it if it is not an xml file
+
         if (FileUtils.isFilesizeGreaterThan(file, staticCodeAnalysisReportFilesizeLimit)) {
             return createFileTooLargeReport(file.getName());
         }
