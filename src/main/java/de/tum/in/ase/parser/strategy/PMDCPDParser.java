@@ -37,7 +37,7 @@ class PMDCPDParser implements ParserStrategy {
             int lines = ParserUtils.extractInt(duplication, DUPLICATION_ATT_LINES);
 
             // Create an issue for each found duplication
-            for (Element file : getChildElements(duplication, FILE_TAG, duplication.getNamespaceURI())) {
+            for (Element file : getChildElements(duplication, FILE_TAG)) {
                 Issue issue = new Issue();
                 issue.setCategory(CPD_CATEGORY);
                 issue.setRule(CPD_CATEGORY);

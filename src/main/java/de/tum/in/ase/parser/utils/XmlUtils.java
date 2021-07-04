@@ -34,21 +34,9 @@ public class XmlUtils {
      * @return a list of all children with the name in the empty namespace
      */
     public static Iterable<Element> getChildElements(Element parent, String name) {
-        return getChildElements(parent, name, null);
-    }
-
-    /**
-     * Gets all child elements of the given parent with the given properties
-     *
-     * @param parent of the elements
-     * @param name name of the tag of the elements
-     * @param nameSpace namespace of the elements
-     * @return a list of all children with the name and namespace
-     */
-    public static Iterable<Element> getChildElements(Element parent, String name, String nameSpace) {
         return () -> new Iterator<Element>() {
-            final NodeList children = parent.getElementsByTagNameNS(nameSpace, name != null ? name : "*");
-            int index = 0;
+            final NodeList children = parent.getElementsByTagName(name != null ? name : "*");
+            int index = skipIndirectChildren();
 
             @Override
             public boolean hasNext() {
@@ -60,7 +48,17 @@ public class XmlUtils {
                 if (!hasNext())
                     throw new NoSuchElementException();
 
-                return (Element) children.item(index++);
+                Element result = (Element) children.item(index++);
+                skipIndirectChildren();
+
+                return result;
+            }
+
+            private int skipIndirectChildren() {
+                while (hasNext() && !children.item(index).getParentNode().isEqualNode(parent))
+                    index++;
+
+                return index;
             }
         };
     }

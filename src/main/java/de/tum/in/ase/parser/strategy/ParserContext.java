@@ -1,6 +1,5 @@
 package de.tum.in.ase.parser.strategy;
 
-import com.sun.tools.javac.util.List;
 import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.UnsupportedToolException;
@@ -14,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ParserContext {
 
@@ -71,7 +71,9 @@ public class ParserContext {
         issue.setStartLine(1);
         issue.setRule("TooManyIssues");
 
-        report.setIssues(List.of(issue));
+        ArrayList<Issue> issues = new ArrayList<>();
+        issues.add(issue);
+        report.setIssues(issues);
         return report;
     }
 }

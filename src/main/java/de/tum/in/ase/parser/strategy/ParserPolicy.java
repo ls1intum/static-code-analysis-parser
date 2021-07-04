@@ -16,7 +16,7 @@ class ParserPolicy {
      * @throws UnsupportedToolException - If the specified tool is not supported
      */
     public ParserStrategy configure(Document document) {
-        String rootTag = document.getDocumentElement().getLocalName();
+        String rootTag = document.getDocumentElement().getNodeName();
         StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByIdentifierTag(rootTag)
                 .orElseThrow(() -> new UnsupportedToolException("Tool for identifying tag " + rootTag + " not found"));
 

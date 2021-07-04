@@ -23,6 +23,7 @@ class SpotbugsParser implements ParserStrategy {
     private static final String SOURCELINE_ELEMENT = "SourceLine";
     private static final String SOURCELINE_ATT_SOURCEPATH = "sourcepath";
     private static final String SOURCELINE_ATT_START = "start";
+    private static final String SOURCELINE_ATT_END = "end";
     private static final String LONGMESSAGE_ELEMENT = "LongMessage";
 
     @Override
@@ -34,7 +35,7 @@ class SpotbugsParser implements ParserStrategy {
 
         String sourceDirectory = getFirstChild(root, PROJECT_ELEMENT)
                 .flatMap(p -> getFirstChild(p, SOURCE_DIRECTORY_ELEMENT))
-                .map(Element::getNodeValue)
+                .map(Element::getTextContent)
                 .map(srcDir -> {
                     if (!srcDir.endsWith(File.separator)) {
                         return srcDir + File.separator;
@@ -56,13 +57,11 @@ class SpotbugsParser implements ParserStrategy {
             getFirstChild(bugInstance, SOURCELINE_ELEMENT).ifPresent(sourceLine -> {
                 String unixPath = ParserUtils.transformToUnixPath(sourceDirectory + sourceLine.getAttribute(SOURCELINE_ATT_SOURCEPATH));
                 issue.setFilePath(unixPath);
-                // Set endLine by duplicating the startLine. Spotbugs does not support a endLine
-                int startLine = ParserUtils.extractInt(sourceLine, SOURCELINE_ATT_START);
-                issue.setStartLine(startLine);
-                issue.setEndLine(startLine);
+                issue.setStartLine(ParserUtils.extractInt(sourceLine, SOURCELINE_ATT_START));
+                issue.setEndLine(ParserUtils.extractInt(sourceLine, SOURCELINE_ATT_END));
             });
 
-            getFirstChild(bugInstance, LONGMESSAGE_ELEMENT).ifPresent(longMessage -> issue.setMessage(ParserUtils.stripNewLinesAndWhitespace(longMessage.getNodeValue())));
+            getFirstChild(bugInstance, LONGMESSAGE_ELEMENT).ifPresent(longMessage -> issue.setMessage(ParserUtils.stripNewLinesAndWhitespace(longMessage.getTextContent())));
             issues.add(issue);
         }
         report.setIssues(issues);
