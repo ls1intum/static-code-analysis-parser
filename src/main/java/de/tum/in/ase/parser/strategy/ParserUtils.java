@@ -1,8 +1,8 @@
 package de.tum.in.ase.parser.strategy;
 
-import org.w3c.dom.Element;
-
 import java.io.File;
+
+import org.w3c.dom.Element;
 
 /**
  * Utility class providing shared functionality for report parsing

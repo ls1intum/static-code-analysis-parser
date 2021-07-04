@@ -1,11 +1,11 @@
 package de.tum.in.ase.parser.utils;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class XmlUtils {
     public static Optional<Element> getFirstChild(Element parent, String name) {

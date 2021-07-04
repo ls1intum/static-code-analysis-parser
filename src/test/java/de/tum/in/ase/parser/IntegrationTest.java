@@ -2,10 +2,11 @@ package de.tum.in.ase.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import de.tum.in.ase.parser.exception.ParserException;
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import de.tum.in.ase.parser.exception.ParserException;
 
 /**
  * Tests each parser with an example file

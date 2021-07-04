@@ -1,19 +1,21 @@
 package de.tum.in.ase.parser.strategy;
 
-import de.tum.in.ase.parser.domain.Issue;
-import de.tum.in.ase.parser.domain.Report;
-import de.tum.in.ase.parser.exception.UnsupportedToolException;
-import de.tum.in.ase.parser.utils.FileUtils;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
+import de.tum.in.ase.parser.exception.UnsupportedToolException;
+import de.tum.in.ase.parser.utils.FileUtils;
 
 public class ParserContext {
 

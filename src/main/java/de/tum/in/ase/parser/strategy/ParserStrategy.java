@@ -1,7 +1,8 @@
 package de.tum.in.ase.parser.strategy;
 
-import de.tum.in.ase.parser.domain.Report;
 import org.w3c.dom.Document;
+
+import de.tum.in.ase.parser.domain.Report;
 
 interface ParserStrategy {
 

@@ -1,10 +1,11 @@
 package de.tum.in.ase.parser.strategy;
 
-import de.tum.in.ase.parser.exception.UnsupportedToolException;
+import static de.tum.in.ase.parser.utils.XmlUtils.getFirstChild;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static de.tum.in.ase.parser.utils.XmlUtils.getFirstChild;
+import de.tum.in.ase.parser.exception.UnsupportedToolException;
 
 class ParserPolicy {
 

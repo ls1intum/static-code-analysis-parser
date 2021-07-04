@@ -1,14 +1,15 @@
 package de.tum.in.ase.parser.strategy;
 
-import de.tum.in.ase.parser.domain.Issue;
-import de.tum.in.ase.parser.domain.Report;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
 
 public abstract class CheckstyleFormatParser implements ParserStrategy {
 
