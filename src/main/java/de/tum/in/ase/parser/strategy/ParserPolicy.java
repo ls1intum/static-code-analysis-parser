@@ -1,10 +1,10 @@
 package de.tum.in.ase.parser.strategy;
 
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-
 import de.tum.in.ase.parser.exception.UnsupportedToolException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import static de.tum.in.ase.parser.utils.XmlUtils.getFirstChild;
 
 class ParserPolicy {
 
@@ -16,7 +16,7 @@ class ParserPolicy {
      * @throws UnsupportedToolException - If the specified tool is not supported
      */
     public ParserStrategy configure(Document document) {
-        String rootTag = document.getRootElement().getLocalName();
+        String rootTag = document.getDocumentElement().getLocalName();
         StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByIdentifierTag(rootTag)
                 .orElseThrow(() -> new UnsupportedToolException("Tool for identifying tag " + rootTag + " not found"));
 
@@ -36,21 +36,18 @@ class ParserPolicy {
      * @return the parser strategy
      */
     private ParserStrategy getCorrectCheckstyleParser(Document document) {
-        Element root = document.getRootElement();
-        String language;
-        Elements fileElements = root.getChildElements(CheckstyleFormatParser.FILE_TAG);
-        if (fileElements.size() > 0) {
-            Element fileElement = fileElements.get(0);
-            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttributeValue(CheckstyleFormatParser.FILE_ATT_NAME));
-            language = CheckstyleFormatParser.getProgrammingLanguage(unixPath);
+        Element root = document.getDocumentElement();
+        return getFirstChild(root, CheckstyleFormatParser.FILE_TAG).map(fileElement -> {
+            String nameValue = fileElement.getAttributes().getNamedItem(CheckstyleFormatParser.FILE_ATT_NAME).getNodeValue();
+            String unixPath = ParserUtils.transformToUnixPath(nameValue);
+            return CheckstyleFormatParser.getProgrammingLanguage(unixPath);
+        }).map(language -> {
             if (language.equals("swift")) {
                 return StaticCodeAnalysisTool.SWIFTLINT.getStrategy();
             } else {
                 return StaticCodeAnalysisTool.CHECKSTYLE.getStrategy();
             }
-        } else {
-            // default checkstyle tool
-            return StaticCodeAnalysisTool.CHECKSTYLE.getStrategy();
-        }
+            // Default to normal Checkstyle tool
+        }).orElse(StaticCodeAnalysisTool.CHECKSTYLE.getStrategy());
     }
 }

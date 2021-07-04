@@ -1,17 +1,19 @@
 package de.tum.in.ase.parser.strategy;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.ParsingException;
-
+import com.sun.tools.javac.util.List;
 import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.UnsupportedToolException;
 import de.tum.in.ase.parser.utils.FileUtils;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 public class ParserContext {
 
@@ -24,11 +26,12 @@ public class ParserContext {
      *
      * @param file File referencing the static code analysis report
      * @return Report containing the static code analysis issues
-     * @throws UnsupportedToolException if the static code analysis tool which created the report is not supported
-     * @throws ParsingException if the document could not be built
-     * @throws IOException if the file could not be read
+     * @throws UnsupportedToolException     if the static code analysis tool which created the report is not supported
+     * @throws IOException                  if the file could not be read
+     * @throws ParserConfigurationException if no parser could be created
+     * @throws SAXException                 if a parsing error occurs
      */
-    public Report getReport(File file) throws UnsupportedToolException, ParsingException, IOException {
+    public Report getReport(File file) throws IOException, ParserConfigurationException, SAXException {
 
         // TODO: replace the XML library with the one used in Artemis XMLFileUtils
         // TODO: make sure to parse xml files and do not even try it if it is not an xml file
@@ -37,9 +40,11 @@ public class ParserContext {
             return createFileTooLargeReport(file.getName());
         }
 
-        Builder parser = new Builder();
-        Document doc = parser.build(file);
-        return parseDocument(doc);
+        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        domFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        final DocumentBuilder builder = domFactory.newDocumentBuilder();
+        final Document document = builder.parse(file);
+        return parseDocument(document);
     }
 
     private Report parseDocument(Document doc) {
@@ -56,19 +61,17 @@ public class ParserContext {
      * @return The report.
      */
     private Report createFileTooLargeReport(String filename) {
-        StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByFilename(filename).orElseGet(null);
+        StaticCodeAnalysisTool tool = StaticCodeAnalysisTool.getToolByFilename(filename).orElse(null);
         Report report = new Report(tool);
 
         Issue issue = new Issue();
         issue.setCategory("miscellaneous");
-        issue.setMessage(String.format("There are too many issues found in the %s tool.", tool.toString()));
+        issue.setMessage(String.format("There are too many issues found in the %s tool.", tool));
         issue.setFilePath(filename);
         issue.setStartLine(1);
         issue.setRule("TooManyIssues");
 
-        ArrayList<Issue> issues = new ArrayList<>();
-        issues.add(issue);
-        report.setIssues(issues);
+        report.setIssues(List.of(issue));
         return report;
     }
 }

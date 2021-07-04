@@ -1,14 +1,15 @@
 package de.tum.in.ase.parser.strategy;
 
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Document;
-import nu.xom.Element;
-
-import de.tum.in.ase.parser.domain.Issue;
-import de.tum.in.ase.parser.domain.Report;
+import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
 
 class PMDCPDParser implements ParserStrategy {
 
@@ -28,19 +29,19 @@ class PMDCPDParser implements ParserStrategy {
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.PMD_CPD);
         List<Issue> allIssues = new ArrayList<>();
-        Element root = doc.getRootElement();
+        Element root = doc.getDocumentElement();
 
         // Iterate over all <duplication> elements
-        for (Element duplication : root.getChildElements(DUPLICATION_TAG)) {
+        for (Element duplication : getChildElements(root, DUPLICATION_TAG)) {
             List<Issue> issuesForDuplication = new ArrayList<>();
             int lines = ParserUtils.extractInt(duplication, DUPLICATION_ATT_LINES);
 
             // Create an issue for each found duplication
-            for (Element file : duplication.getChildElements(FILE_TAG, duplication.getNamespaceURI())) {
+            for (Element file : getChildElements(duplication, FILE_TAG, duplication.getNamespaceURI())) {
                 Issue issue = new Issue();
                 issue.setCategory(CPD_CATEGORY);
                 issue.setRule(CPD_CATEGORY);
-                String unixPath = ParserUtils.transformToUnixPath(file.getAttributeValue(FILE_ATT_PATH));
+                String unixPath = ParserUtils.transformToUnixPath(file.getAttribute(FILE_ATT_PATH));
                 issue.setFilePath(unixPath);
                 issue.setStartLine(ParserUtils.extractInt(file, FILE_ATT_STARTLINE));
                 issue.setEndLine(ParserUtils.extractInt(file, FILE_ATT_ENDLINE));

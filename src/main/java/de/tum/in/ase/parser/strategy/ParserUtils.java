@@ -1,8 +1,8 @@
 package de.tum.in.ase.parser.strategy;
 
-import java.io.File;
+import org.w3c.dom.Element;
 
-import nu.xom.Element;
+import java.io.File;
 
 /**
  * Utility class providing shared functionality for report parsing
@@ -18,7 +18,7 @@ class ParserUtils {
      */
     public static int extractInt(Element element, String attribute) {
         try {
-            return Integer.parseInt(element.getAttributeValue(attribute));
+            return Integer.parseInt(element.getAttribute(attribute));
         } catch (NumberFormatException e) {
             return 0;
         }

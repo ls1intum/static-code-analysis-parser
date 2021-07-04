@@ -1,13 +1,14 @@
 package de.tum.in.ase.parser.strategy;
 
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Document;
-import nu.xom.Element;
-
-import de.tum.in.ase.parser.domain.Issue;
-import de.tum.in.ase.parser.domain.Report;
+import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
 
 class PMDParser implements ParserStrategy {
 
@@ -26,25 +27,25 @@ class PMDParser implements ParserStrategy {
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.PMD);
         List<Issue> issues = new ArrayList<>();
-        Element root = doc.getRootElement();
+        Element root = doc.getDocumentElement();
 
         // Iterate over all <file> elements
-        for (Element fileElement : root.getChildElements(FILE_TAG, root.getNamespaceURI())) {
+        for (Element fileElement : getChildElements(root, FILE_TAG, root.getNamespaceURI())) {
             // Extract the file path
-            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttributeValue(FILE_ATT_NAME));
+            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttribute(FILE_ATT_NAME));
 
             // Iterate over all <violation> elements
-            for (Element violationElement : fileElement.getChildElements()) {
+            for (Element violationElement : getChildElements(fileElement)) {
                 Issue issue = new Issue(unixPath);
 
-                issue.setRule(violationElement.getAttributeValue(VIOLATION_ATT_RULE));
-                issue.setCategory(violationElement.getAttributeValue(VIOLATION_ATT_RULESET));
-                issue.setPriority(violationElement.getAttributeValue(VIOLATION_ATT_PRIORITY));
+                issue.setRule(violationElement.getAttribute(VIOLATION_ATT_RULE));
+                issue.setCategory(violationElement.getAttribute(VIOLATION_ATT_RULESET));
+                issue.setPriority(violationElement.getAttribute(VIOLATION_ATT_PRIORITY));
                 issue.setStartLine(ParserUtils.extractInt(violationElement, VIOLATION_ATT_BEGINLINE));
                 issue.setEndLine(ParserUtils.extractInt(violationElement, VIOLATION_ATT_ENDLINE));
                 issue.setStartColumn(ParserUtils.extractInt(violationElement, VIOLATION_ATT_BEGINCOLUMN));
                 issue.setEndColumn(ParserUtils.extractInt(violationElement, VIOLATION_ATT_ENDCOLUMN));
-                issue.setMessage(ParserUtils.stripNewLinesAndWhitespace(violationElement.getValue()));
+                issue.setMessage(ParserUtils.stripNewLinesAndWhitespace(violationElement.getNodeValue()));
 
                 issues.add(issue);
             }
