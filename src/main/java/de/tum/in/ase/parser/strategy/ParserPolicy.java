@@ -38,7 +38,7 @@ class ParserPolicy {
     private ParserStrategy getCorrectCheckstyleParser(Document document) {
         Element root = document.getDocumentElement();
         return getFirstChild(root, CheckstyleFormatParser.FILE_TAG).map(fileElement -> {
-            String nameValue = fileElement.getAttributes().getNamedItem(CheckstyleFormatParser.FILE_ATT_NAME).getNodeValue();
+            String nameValue = fileElement.getAttribute(CheckstyleFormatParser.FILE_ATT_NAME);
             String unixPath = ParserUtils.transformToUnixPath(nameValue);
             return CheckstyleFormatParser.getProgrammingLanguage(unixPath);
         }).map(language -> {
