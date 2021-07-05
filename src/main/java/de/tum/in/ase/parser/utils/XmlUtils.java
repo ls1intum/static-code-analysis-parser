@@ -10,10 +10,12 @@ import org.w3c.dom.NodeList;
 public class XmlUtils {
     public static Optional<Element> getFirstChild(Element parent, String name) {
         Iterator<Element> iterator = getChildElements(parent, name).iterator();
-        if (iterator.hasNext())
+        if (iterator.hasNext()) {
             return Optional.of(iterator.next());
-        else
+        }
+        else {
             return Optional.empty();
+        }
     }
 
     /**
@@ -45,8 +47,9 @@ public class XmlUtils {
 
             @Override
             public Element next() {
-                if (!hasNext())
+                if (!hasNext()) {
                     throw new NoSuchElementException();
+                }
 
                 Element result = (Element) children.item(index++);
                 skipIndirectChildren();
@@ -55,8 +58,9 @@ public class XmlUtils {
             }
 
             private int skipIndirectChildren() {
-                while (hasNext() && !children.item(index).getParentNode().isEqualNode(parent))
+                while (hasNext() && !children.item(index).getParentNode().isEqualNode(parent)) {
                     index++;
+                }
 
                 return index;
             }
