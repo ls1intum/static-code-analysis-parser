@@ -1,6 +1,7 @@
 package de.tum.in.ase.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 
@@ -53,5 +54,15 @@ public class IntegrationTest {
     @Test
     public void testSwiftlintParser() throws ParserException {
         testParser("src/test/java/swiftlint-result.xml", EXPECTED_SWIFTLINT);
+    }
+
+    @Test
+    public void testParseInvalidFile() {
+        Exception exception = assertThrows(ParserException.class, () -> {
+            File file = new File("src/test/java/cpd_invalid.txt");
+            ReportParser parser = new ReportParser();
+            parser.transformToJSONReport(file);
+        });
+        assertEquals(exception.getMessage(), "File must be xml format");
     }
 }

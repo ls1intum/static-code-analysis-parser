@@ -35,8 +35,6 @@ public class ParserContext {
      */
     public Report getReport(File file) throws IOException, ParserConfigurationException, SAXException {
 
-        // TODO: replace the XML library with the one used in Artemis XMLFileUtils
-        // TODO: make sure to parse xml files and do not even try it if it is not an xml file
 
         if (FileUtils.isFilesizeGreaterThan(file, staticCodeAnalysisReportFilesizeLimit)) {
             return createFileTooLargeReport(file.getName());
