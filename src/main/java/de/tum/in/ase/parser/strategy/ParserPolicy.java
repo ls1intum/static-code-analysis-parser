@@ -48,7 +48,7 @@ class ParserPolicy {
             } else {
                 return StaticCodeAnalysisTool.CHECKSTYLE.getStrategy();
             }
-            // Default to normal Checkstyle tool
+            // default to normal checkstyle tool
         }).orElse(StaticCodeAnalysisTool.CHECKSTYLE.getStrategy());
     }
 }

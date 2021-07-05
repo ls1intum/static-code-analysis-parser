@@ -26,6 +26,13 @@ public class XmlUtils {
         return domFactory.newDocumentBuilder();
     }
 
+    /**
+     * Gets the first child with the given name of the given parent or Optional.empty if no such child exists
+     *
+     * @param parent parent to search
+     * @param name name of the child
+     * @return an optional containing the first child or empty if none exists
+     */
     public static Optional<Element> getFirstChild(Element parent, String name) {
         Iterator<Element> iterator = getChildElements(parent, name).iterator();
         if (iterator.hasNext()) {
@@ -80,6 +87,7 @@ public class XmlUtils {
                     index++;
                 }
 
+                // a bit hacky solution to allow to execute the method on initialization
                 return index;
             }
         };
