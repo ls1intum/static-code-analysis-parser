@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
@@ -16,6 +14,7 @@ import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.UnsupportedToolException;
 import de.tum.in.ase.parser.utils.FileUtils;
+import de.tum.in.ase.parser.utils.XmlUtils;
 
 public class ParserContext {
 
@@ -40,9 +39,7 @@ public class ParserContext {
             return createFileTooLargeReport(file.getName());
         }
 
-        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        domFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        final DocumentBuilder builder = domFactory.newDocumentBuilder();
+        final DocumentBuilder builder = XmlUtils.createDocumentBuilder();
         final Document document = builder.parse(file);
         return parseDocument(document);
     }

@@ -4,10 +4,28 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class XmlUtils {
+
+    /**
+     * Creates a new document builder.
+     *
+     * @return the DocumentBuilder
+     * @throws ParserConfigurationException if secure processing feature cannot be set
+     */
+    public static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
+        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        domFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        return domFactory.newDocumentBuilder();
+    }
+
     public static Optional<Element> getFirstChild(Element parent, String name) {
         Iterator<Element> iterator = getChildElements(parent, name).iterator();
         if (iterator.hasNext()) {
