@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.ParserException;
 import de.tum.in.ase.parser.strategy.ParserContext;
+import de.tum.in.ase.parser.utils.FileUtils;
 
 /**
  * Public API for parsing of static code analysis reports
@@ -25,6 +26,11 @@ public class ReportParser {
         try {
             if (file == null) {
                 throw new IllegalArgumentException("File must not be null");
+            }
+
+            // The static code analysis parser only supports xml files.
+            if (!FileUtils.getExtension(file).equals("xml")){
+                throw new IllegalArgumentException("File must be xml format");
             }
 
             ParserContext context = new ParserContext();
@@ -48,6 +54,11 @@ public class ReportParser {
         try {
             if (file == null) {
                 throw new IllegalArgumentException("File must not be null");
+            }
+
+            // The static code analysis parser only supports xml files.
+            if (!FileUtils.getExtension(file).equals("xml")){
+                throw new IllegalArgumentException("File must be xml format");
             }
 
             ParserContext context = new ParserContext();

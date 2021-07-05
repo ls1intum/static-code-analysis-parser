@@ -1,10 +1,12 @@
 package de.tum.in.ase.parser.strategy;
 
+import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Document;
-import nu.xom.Element;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
@@ -26,21 +28,21 @@ public abstract class CheckstyleFormatParser implements ParserStrategy {
 
     protected void extractIssues(Document doc, Report report) {
         List<Issue> issues = new ArrayList<>();
-        Element root = doc.getRootElement();
+        Element root = doc.getDocumentElement();
 
         // Iterate over all <file> elements
-        for (Element fileElement : root.getChildElements(FILE_TAG)) {
-            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttributeValue(FILE_ATT_NAME));
+        for (Element fileElement : getChildElements(root, FILE_TAG)) {
+            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttribute(FILE_ATT_NAME));
 
             // Iterate over all <error> elements
-            for (Element errorElement : fileElement.getChildElements()) {
+            for (Element errorElement : getChildElements(fileElement)) {
                 Issue issue = new Issue(unixPath);
 
-                String errorSource = errorElement.getAttributeValue(ERROR_ATT_SOURCE);
+                String errorSource = errorElement.getAttribute(ERROR_ATT_SOURCE);
                 extractRuleAndCategory(issue, errorSource);
 
-                issue.setPriority(errorElement.getAttributeValue(ERROR_ATT_SEVERITY));
-                issue.setMessage(errorElement.getAttributeValue(ERROR_ATT_MESSAGE));
+                issue.setPriority(errorElement.getAttribute(ERROR_ATT_SEVERITY));
+                issue.setMessage(errorElement.getAttribute(ERROR_ATT_MESSAGE));
 
                 // Set startLine as endLine as Checkstyle does not support an end line
                 int startLine = ParserUtils.extractInt(errorElement, ERROR_ATT_LINENUMBER);

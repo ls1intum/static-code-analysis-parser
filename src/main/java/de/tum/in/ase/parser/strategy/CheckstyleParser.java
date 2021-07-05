@@ -1,6 +1,6 @@
 package de.tum.in.ase.parser.strategy;
 
-import nu.xom.Document;
+import org.w3c.dom.Document;
 
 import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
