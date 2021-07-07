@@ -5,6 +5,7 @@ import de.tum.in.ase.parser.domain.Report;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
+import com.google.json.JsonSanitizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class GCCParser implements ParserStrategy {
     protected static final String ERROR_ATT_KIND = "kind";
     protected static final String ERROR_ATT_LOCATIONS = "locations";
     protected static final String ERROR_ATT_OPTION = "option";
+    protected static final int CARET_POS = 0;
 
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.GCC);
@@ -25,10 +27,16 @@ public class GCCParser implements ParserStrategy {
         return report;
     }
 
+    /**
+     * Constructs issues and adds them to the static analysis report.
+     *
+     * @param doc Contains the json output from GCC
+     * @param report The report the issues will be added to
+     */
     protected void extractIssues(Document doc, Report report) {
-        String root = doc.getDocumentElement().getNodeValue();
+        String jsonInput = JsonSanitizer.sanitize(doc.getDocumentElement().getNodeValue());
 
-        JSONArray gccIssues = new JSONArray(root);
+        JSONArray gccIssues = new JSONArray(jsonInput);
 
         List<Issue> issues = new ArrayList<>();
 
@@ -36,7 +44,7 @@ public class GCCParser implements ParserStrategy {
         for (int i = 0; i < gccIssues.length(); i++) {
             JSONObject error = gccIssues.getJSONObject(i);
             JSONArray locations = error.getJSONArray(ERROR_ATT_LOCATIONS);
-            JSONObject info = locations.getJSONObject(0).getJSONObject(ERROR_ATT_CARET);
+            JSONObject info = locations.getJSONObject(CARET_POS).getJSONObject(ERROR_ATT_CARET);
 
             String unixPath = ParserUtils.transformToUnixPath(info.getString(FILE_ATT_NAME));
 
@@ -45,7 +53,6 @@ public class GCCParser implements ParserStrategy {
             String message = error.getString(ERROR_ATT_MESSAGE);
             String option = error.getString(ERROR_ATT_OPTION); // Gives back the kind of error or warning e.g. -Wmisleading-indentation
 
-            // TODO: Check how long the message can be. If possible, add more debug out with gcc like formatting
             issue.setMessage(message);
             issue.setCategory(option);
             issue.setRule(option);
