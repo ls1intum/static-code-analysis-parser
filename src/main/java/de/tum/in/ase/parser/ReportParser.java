@@ -29,8 +29,8 @@ public class ReportParser {
             }
 
             // The static code analysis parser only supports xml files.
-            if (!FileUtils.getExtension(file).equals("xml")){
-                throw new IllegalArgumentException("File must be xml format");
+            if (!(FileUtils.getExtension(file).equals("xml"))) {
+                throw new IllegalArgumentException("File must be xml or json format");
             }
 
             ParserContext context = new ParserContext();
@@ -57,11 +57,12 @@ public class ReportParser {
             }
 
             // The static code analysis parser only supports xml files.
-            if (!FileUtils.getExtension(file).equals("xml")){
-                throw new IllegalArgumentException("File must be xml format");
+            if (!(FileUtils.getExtension(file).equals("xml") || FileUtils.getExtension(file).equals("xml"))) {
+                throw new IllegalArgumentException("File must be xml or json format");
             }
 
             ParserContext context = new ParserContext();
+
             return context.getReport(file);
         }
         catch (Exception e) {

@@ -7,8 +7,10 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
+import static de.tum.in.ase.parser.utils.XmlUtils.getFirstChild;
 
 public class CppCheckParser implements ParserStrategy {
 
@@ -26,37 +28,44 @@ public class CppCheckParser implements ParserStrategy {
         return report;
     }
 
-        protected void extractIssues(Document doc, Report report) {
-
+    protected void extractIssues(Document doc, Report report) {
         List<Issue> issues = new ArrayList<>();
-        Element root = doc.getDocumentElement();
 
-        // Iterate over all <file> elements
-        for (Element fileElement : getChildElements(root, ERROR_TAG)) {
-            String unixPath = ParserUtils.transformToUnixPath(fileElement.getAttribute(FILE_ATT_NAME));
+        Element cppCheckLog = doc.getDocumentElement();
 
-            // Iterate over all <error> elements
-            for (Element errorElement : getChildElements(fileElement)) {
-                Issue issue = new Issue(unixPath);
+        Optional<Element> errors = getFirstChild(cppCheckLog, "errors");
 
-                issue.setPriority(errorElement.getAttribute(ERROR_ATT_SEVERITY));
-                issue.setCategory(errorElement.getAttribute(ERROR_ATT_SEVERITY));
-                issue.setRule(errorElement.getAttribute(ERROR_ID));
-                issue.setMessage(errorElement.getAttribute(ERROR_ATT_MESSAGE));
+        if (!errors.isPresent()) {
+            throw new IllegalArgumentException("Not a valid error format!");
+        }
 
-                // Set startLine as endLine as cppcheck does not support an end line
-                int startLine = ParserUtils.extractInt(errorElement, ERROR_ATT_LINENUMBER);
-                issue.setStartLine(startLine);
-                issue.setEndLine(startLine);
+        // TODO: Decide where to put all the elements for maximum readability on Artemis
+        for (Element errorElement : getChildElements(errors.get(), ERROR_TAG)) {
+            String unixPath = ParserUtils.transformToUnixPath(errorElement.getAttribute(FILE_ATT_NAME));
 
-                // Set startColumn as endColumn as cppcheck does not support an end column
-                int startColumn = ParserUtils.extractInt(errorElement, ERROR_ATT_COLUMN);
-                issue.setStartColumn(startColumn);
-                issue.setEndColumn(startColumn);
+            Issue issue = new Issue(unixPath);
 
+            issue.setPriority(errorElement.getAttribute(ERROR_ATT_SEVERITY));
+            issue.setCategory(errorElement.getAttribute(ERROR_ATT_SEVERITY));
+            issue.setRule(errorElement.getAttribute(ERROR_ID));
+            issue.setMessage(errorElement.getAttribute(ERROR_ATT_MESSAGE));
+
+            // Set startLine as endLine as cppcheck does not support an end line
+            int startLine = ParserUtils.extractInt(errorElement, ERROR_ATT_LINENUMBER);
+            issue.setStartLine(startLine);
+            issue.setEndLine(startLine);
+
+            // Set startColumn as endColumn as cppcheck does not support an end column
+            int startColumn = ParserUtils.extractInt(errorElement, ERROR_ATT_COLUMN);
+            issue.setStartColumn(startColumn);
+            issue.setEndColumn(startColumn);
+
+            // Filter out faulty error
+            if (!issue.getRule().equals("missingIncludeSystem")) {
                 issues.add(issue);
             }
         }
+
         report.setIssues(issues);
     }
 }
