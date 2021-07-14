@@ -23,6 +23,9 @@ public class IntegrationTest {
 
     private static final String EXPECTED_SWIFTLINT = "{\"tool\":\"SWIFTLINT\",\"issues\":[{\"filePath\":\"/opt/bambooagent/bamboo-agent-home/xml-data/build-dir/MDTESTSWIFT-ARTEMISTESTUSER1-JOB1/assignment/Sources/swiftLib/Client.swift\",\"startLine\":59,\"endLine\":59,\"startColumn\":0,\"endColumn\":0,\"rule\":\"line_length\",\"category\":\"swiftLint\",\"message\":\"Line should be 120 characters or less: currently 184 characters\",\"priority\":\"error\"},{\"filePath\":\"/opt/bambooagent/bamboo-agent-home/xml-data/build-dir/MDTESTSWIFT-ARTEMISTESTUSER1-JOB1/assignment/Sources/swiftLib/Client.swift\",\"startLine\":58,\"endLine\":58,\"startColumn\":22,\"endColumn\":22,\"rule\":\"trailing_semicolon\",\"category\":\"swiftLint\",\"message\":\"Lines should not have trailing semicolons.\",\"priority\":\"warning\"},{\"filePath\":\"/opt/bambooagent/bamboo-agent-home/xml-data/build-dir/MDTESTSWIFT-ARTEMISTESTUSER1-JOB1/assignment/Sources/swiftLib/Client.swift\",\"startLine\":60,\"endLine\":60,\"startColumn\":35,\"endColumn\":35,\"rule\":\"trailing_semicolon\",\"category\":\"swiftLint\",\"message\":\"Lines should not have trailing semicolons.\",\"priority\":\"warning\"}]}";
 
+    private static final String EXPECTED_CPPCHECK = "{\"tool\":\"CPPCHECK\",\"issues\":[{\"startLine\":0,\"endLine\":0,\"startColumn\":0,\"endColumn\":0,\"rule\":\"arrayIndexOutOfBounds\",\"category\":\"error\",\"message\":\"Array 'nameBuf[13]' accessed at index 256, which is out of bounds.\",\"priority\":\"error\"},{\"startLine\":0,\"endLine\":0,\"startColumn\":0,\"endColumn\":0,\"rule\":\"shadowVariable\",\"category\":\"style\",\"message\":\"Local variable 'i' shadows outer variable\",\"priority\":\"style\"},{\"startLine\":0,\"endLine\":0,\"startColumn\":0,\"endColumn\":0,\"rule\":\"unusedFunction\",\"category\":\"style\",\"message\":\"The function 'sanitizeName' is never used.\",\"priority\":\"style\"}]}";
+
+    private static final String EXPECTED_GCC = "{\"tool\":\"GCC\",\"issues\":[{\"filePath\":\"ascii_table.c\",\"startLine\":7,\"endLine\":7,\"startColumn\":7,\"endColumn\":7,\"message\":\"variable ‘arr’ set but not used. For more info see: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable\"},{\"filePath\":\"ascii_table.c\",\"startLine\":32,\"endLine\":32,\"startColumn\":32,\"endColumn\":32,\"message\":\"implicit declaration of function ‘malloc’. For more info see: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration\"},{\"filePath\":\"ascii_table.c\",\"startLine\":32,\"endLine\":32,\"startColumn\":32,\"endColumn\":32,\"message\":\"incompatible implicit declaration of built-in function ‘malloc’. For more info see: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wbuiltin-declaration-mismatch\"},{\"filePath\":\"ascii_table.c\",\"startLine\":32,\"endLine\":32,\"startColumn\":32,\"endColumn\":32,\"message\":\"include ‘<stdlib.h>’ or provide a declaration of ‘malloc’\"},{\"filePath\":\"ascii_table.c\",\"startLine\":31,\"endLine\":31,\"startColumn\":31,\"endColumn\":31,\"message\":\"variable ‘ptr’ set but not used. For more info see: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable\"},{\"filePath\":\"ascii_table.c\",\"startLine\":40,\"endLine\":40,\"startColumn\":40,\"endColumn\":40,\"message\":\"leak of ‘ptr’. For more info see: https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html#index-Wanalyzer-malloc-leak\"}]}";
 
     private void testParser(String fileName, String expected) throws ParserException {
         File file = new File(fileName);
@@ -57,12 +60,22 @@ public class IntegrationTest {
     }
 
     @Test
+    public void testCppCheckParser() throws ParserException {
+        testParser("src/test/java/cppcheck.xml", EXPECTED_CPPCHECK);
+    }
+
+    @Test
+    public void testGCCParser() throws ParserException {
+        testParser("src/test/java/gcc.xml", EXPECTED_GCC);
+    }
+
+    @Test
     public void testParseInvalidFile() {
         Exception exception = assertThrows(ParserException.class, () -> {
             File file = new File("src/test/java/cpd_invalid.txt");
             ReportParser parser = new ReportParser();
             parser.transformToJSONReport(file);
         });
-        assertEquals(exception.getMessage(), "File must be xml format");
+        assertEquals(exception.getMessage(), "File must be xml or json format");
     }
 }
