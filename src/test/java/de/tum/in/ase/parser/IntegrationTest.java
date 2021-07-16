@@ -73,8 +73,9 @@ public class IntegrationTest {
         File file = new File("src/test/java/invalid_xml.xml");
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(file);
-        if (!actual.equals(EXPECTED_INVALID_XML_GER))
+        if (!actual.equals(EXPECTED_INVALID_XML_GER)) {
             assertEquals(actual, EXPECTED_INVALID_XML_ENG);
+        }
     }
 
     @Test
