@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 
-import de.tum.in.ase.parser.utils.XmlUtils;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXParseException;
 
 import de.tum.in.ase.parser.exception.ParserException;
-import org.xml.sax.SAXParseException;
+import de.tum.in.ase.parser.utils.XmlUtils;
 
 /**
  * Tests each parser with an example file
@@ -72,8 +72,7 @@ public class IntegrationTest {
     @Test
     public void testParseInvalidXML() throws ParserException {
         String filePath = "src/test/java/invalid_xml.xml";
-        Exception exception = assertThrows(SAXParseException.class, () ->
-            XmlUtils.createDocumentBuilder().parse(new File(filePath)));
+        Exception exception = assertThrows(SAXParseException.class, () -> XmlUtils.createDocumentBuilder().parse(new File(filePath)));
         // JSON transform escapes quotes, so we need to escape them too
         testParser(filePath, String.format(EXPECTED_INVALID_XML, exception.toString().replaceAll("\"", "\\\\\"")));
     }
