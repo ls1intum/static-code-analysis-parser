@@ -1,12 +1,15 @@
 package de.tum.in.ase.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 
+import de.tum.in.ase.parser.utils.XmlUtils;
 import org.junit.jupiter.api.Test;
 
 import de.tum.in.ase.parser.exception.ParserException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Tests each parser with an example file
@@ -25,9 +28,7 @@ public class IntegrationTest {
 
     private static final String EXPECTED_INVALID_FILENAME = "{\"tool\":null,\"issues\":[{\"filePath\":\"cpd_invalid.txt\",\"startLine\":1,\"rule\":\"ExceptionDuringParsing\",\"category\":\"miscellaneous\",\"message\":\"An exception occurred during parsing the report for file cpd_invalid.txt. Exception: java.lang.IllegalArgumentException: File must be xml format\"}]}";
 
-    private static final String EXPECTED_INVALID_XML_GER = "{\"tool\":null,\"issues\":[{\"filePath\":\"invalid_xml.xml\",\"startLine\":1,\"rule\":\"ExceptionDuringParsing\",\"category\":\"miscellaneous\",\"message\":\"An exception occurred during parsing the report for file invalid_xml.xml. Exception: org.xml.sax.SAXParseException; systemId: file:/D:/static-code-analysis-parser/src/test/java/invalid_xml.xml; lineNumber: 4; columnNumber: 3; Elementtyp \\\"file\\\" muss mit dem entsprechenden Endtag \\\"</file>\\\" beendet werden.\"}]}";
-
-    private static final String EXPECTED_INVALID_XML_ENG = "{\"tool\":null,\"issues\":[{\"filePath\":\"invalid_xml.xml\",\"startLine\":1,\"rule\":\"ExceptionDuringParsing\",\"category\":\"miscellaneous\",\"message\":\"An exception occurred during parsing the report for file invalid_xml.xml. Exception: org.xml.sax.SAXParseException; systemId: file:/home/runner/work/static-code-analysis-parser/static-code-analysis-parser/src/test/java/invalid_xml.xml; lineNumber: 4; columnNumber: 3; The element type \\\"file\\\" must be terminated by the matching end-tag \\\"</file>\\\".\"}]}";
+    private static final String EXPECTED_INVALID_XML = "{\"tool\":null,\"issues\":[{\"filePath\":\"invalid_xml.xml\",\"startLine\":1,\"rule\":\"ExceptionDuringParsing\",\"category\":\"miscellaneous\",\"message\":\"An exception occurred during parsing the report for file invalid_xml.xml. Exception: %s\"}]}";
 
     private static final String EXPECTED_INVALID_NAME = "{\"tool\":null,\"issues\":[{\"filePath\":\"invalid_name.xml\",\"startLine\":1,\"rule\":\"ExceptionDuringParsing\",\"category\":\"miscellaneous\",\"message\":\"An exception occurred during parsing the report for file invalid_name.xml. Exception: de.tum.in.ase.parser.exception.UnsupportedToolException: Tool for identifying tag data not found\"}]}";
 
@@ -70,12 +71,11 @@ public class IntegrationTest {
 
     @Test
     public void testParseInvalidXML() throws ParserException {
-        File file = new File("src/test/java/invalid_xml.xml");
-        ReportParser parser = new ReportParser();
-        String actual = parser.transformToJSONReport(file);
-        if (!actual.equals(EXPECTED_INVALID_XML_GER)) {
-            assertEquals(actual, EXPECTED_INVALID_XML_ENG);
-        }
+        String filePath = "src/test/java/invalid_xml.xml";
+        Exception exception = assertThrows(SAXParseException.class, () ->
+            XmlUtils.createDocumentBuilder().parse(new File(filePath)));
+        // JSON transform escapes quotes, so we need to escape them too
+        testParser(filePath, String.format(EXPECTED_INVALID_XML, exception.toString().replaceAll("\"", "\\\\\"")));
     }
 
     @Test
