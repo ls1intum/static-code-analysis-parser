@@ -14,7 +14,7 @@ import static de.tum.in.ase.parser.utils.XmlUtils.getChildElements;
 import static de.tum.in.ase.parser.utils.XmlUtils.getFirstChild;
 
 
-public class GCCParser implements ParserStrategy {
+public class GccParser implements ParserStrategy {
     protected static final String ERROR_TAG = "item";
     protected static final String ERROR_MESSAGE = "message";
     protected static final String ERROR_LINENUMBER = "line";
@@ -49,6 +49,9 @@ public class GCCParser implements ParserStrategy {
 
             // File path will be set later
             Issue issue = new Issue(null);
+
+            String category = "gcc";
+            issue.setCategory(category);
 
             Optional<Element> errorKind = getFirstChild(item, ERROR_KIND);
             errorKind.ifPresent(element -> issue.setPriority(element.getNodeValue()));

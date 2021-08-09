@@ -45,8 +45,10 @@ public class CppCheckParser implements ParserStrategy {
 
             Issue issue = new Issue(unixPath);
 
+            String category = "cppcheck";
+            issue.setCategory(category);
+
             issue.setPriority(errorElement.getAttribute(ERROR_ATT_SEVERITY));
-            issue.setCategory(errorElement.getAttribute(ERROR_ATT_SEVERITY));
             issue.setRule(errorElement.getAttribute(ERROR_ID));
             issue.setMessage(errorElement.getAttribute(ERROR_ATT_MESSAGE));
 

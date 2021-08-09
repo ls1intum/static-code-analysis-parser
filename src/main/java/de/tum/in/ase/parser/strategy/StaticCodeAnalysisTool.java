@@ -10,7 +10,7 @@ public enum StaticCodeAnalysisTool {
     PMD("pmd", "pmd.xml", new PMDParser()),
     PMD_CPD("pmd-cpd", "cpd.xml", new PMDCPDParser()),
     CPPCHECK("results", "cppcheck.xml", new CppCheckParser()),
-    GCC("all", "gcc.xml", new GCCParser());
+    GCC("all", "gcc.xml", new GccParser());
 
     private final String identifierTag;
     private final String filename;
