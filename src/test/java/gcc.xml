@@ -1,246 +1,44 @@
-<?xml version="1.0" ?>
-<all>
-    <item type="dict">
-        <kind type="str">error</kind>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">15</display-column>
-                    <line type="int">7</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">15</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">13</byte-column>
-                    <display-column type="int">13</display-column>
-                    <line type="int">7</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">13</column>
-                </caret>
-            </item>
-        </locations>
-        <column-origin type="int">1</column-origin>
-        <option type="str">-Werror=unused-but-set-variable</option>
-        <children type="list"/>
-        <option_url type="str">https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable</option_url>
-        <message type="str">variable ‘arr’ set but not used</message>
-    </item>
-    <item type="dict">
-        <kind type="str">error</kind>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">20</byte-column>
-                    <display-column type="int">20</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">20</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">15</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">15</column>
-                </caret>
-            </item>
-        </locations>
-        <column-origin type="int">1</column-origin>
-        <option type="str">-Werror=implicit-function-declaration</option>
-        <children type="list">
-            <item type="dict">
-                <kind type="str">note</kind>
-                <fixits type="list">
-                    <item type="dict">
-                        <next type="dict">
-                            <byte-column type="int">1</byte-column>
-                            <display-column type="int">1</display-column>
-                            <line type="int">2</line>
-                            <file type="str">ascii_table.c</file>
-                            <column type="int">1</column>
-                        </next>
-                        <string type="str">#include &lt;stdlib.h&gt;
-                        </string>
-                        <start type="dict">
-                            <byte-column type="int">1</byte-column>
-                            <display-column type="int">1</display-column>
-                            <line type="int">2</line>
-                            <file type="str">ascii_table.c</file>
-                            <column type="int">1</column>
-                        </start>
-                    </item>
-                </fixits>
-                <locations type="list">
-                    <item type="dict">
-                        <caret type="dict">
-                            <byte-column type="int">1</byte-column>
-                            <display-column type="int">1</display-column>
-                            <line type="int">2</line>
-                            <file type="str">ascii_table.c</file>
-                            <column type="int">1</column>
-                        </caret>
-                    </item>
-                </locations>
-                <message type="str">include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’</message>
-            </item>
-        </children>
-        <option_url type="str">https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration</option_url>
-        <message type="str">implicit declaration of function ‘malloc’</message>
-    </item>
-    <item type="dict">
-        <kind type="str">error</kind>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">20</byte-column>
-                    <display-column type="int">20</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">20</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">15</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">15</column>
-                </caret>
-            </item>
-        </locations>
-        <column-origin type="int">1</column-origin>
-        <option type="str">-Werror=builtin-declaration-mismatch</option>
-        <children type="list"/>
-        <option_url type="str">https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wbuiltin-declaration-mismatch</option_url>
-        <message type="str">incompatible implicit declaration of built-in function ‘malloc’</message>
-    </item>
-    <item type="dict">
-        <kind type="str">note</kind>
-        <column-origin type="int">1</column-origin>
-        <children type="list"/>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">20</byte-column>
-                    <display-column type="int">20</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">20</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">15</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">15</column>
-                </caret>
-            </item>
-        </locations>
-        <message type="str">include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’</message>
-    </item>
-    <item type="dict">
-        <kind type="str">error</kind>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">16</byte-column>
-                    <display-column type="int">16</display-column>
-                    <line type="int">31</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">16</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">14</byte-column>
-                    <display-column type="int">14</display-column>
-                    <line type="int">31</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">14</column>
-                </caret>
-            </item>
-        </locations>
-        <column-origin type="int">1</column-origin>
-        <option type="str">-Werror=unused-but-set-variable</option>
-        <children type="list"/>
-        <option_url type="str">https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable</option_url>
-        <message type="str">variable ‘ptr’ set but not used</message>
-    </item>
-    <item type="dict">
-        <kind type="str">error</kind>
-        <locations type="list">
-            <item type="dict">
-                <finish type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">22</display-column>
-                    <line type="int">40</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">22</column>
-                </finish>
-                <caret type="dict">
-                    <byte-column type="int">9</byte-column>
-                    <display-column type="int">16</display-column>
-                    <line type="int">40</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">16</column>
-                </caret>
-            </item>
-        </locations>
-        <path type="list">
-            <item type="dict">
-                <location type="dict">
-                    <byte-column type="int">15</byte-column>
-                    <display-column type="int">15</display-column>
-                    <line type="int">32</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">15</column>
-                </location>
-                <description type="str">allocated here</description>
-                <depth type="int">1</depth>
-                <function type="str">decimal_to_hexadecimal</function>
-            </item>
-            <item type="dict">
-                <location type="dict">
-                    <byte-column type="int">26</byte-column>
-                    <display-column type="int">33</display-column>
-                    <line type="int">34</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">33</column>
-                </location>
-                <description type="str">following ‘false’ branch (when ‘dec_num == 0’)...</description>
-                <depth type="int">1</depth>
-                <function type="str">decimal_to_hexadecimal</function>
-            </item>
-            <item type="dict">
-                <location type="dict">
-                    <byte-column type="int">9</byte-column>
-                    <display-column type="int">16</display-column>
-                    <line type="int">40</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">16</column>
-                </location>
-                <description type="str">...to here</description>
-                <depth type="int">1</depth>
-                <function type="str">decimal_to_hexadecimal</function>
-            </item>
-            <item type="dict">
-                <location type="dict">
-                    <byte-column type="int">9</byte-column>
-                    <display-column type="int">16</display-column>
-                    <line type="int">40</line>
-                    <file type="str">ascii_table.c</file>
-                    <column type="int">16</column>
-                </location>
-                <description type="str">‘ptr’ leaks here; was allocated at (1)</description>
-                <depth type="int">1</depth>
-                <function type="str">decimal_to_hexadecimal</function>
-            </item>
-        </path>
-        <column-origin type="int">1</column-origin>
-        <option type="str">-Werror=analyzer-malloc-leak</option>
-        <children type="list"/>
-        <option_url type="str">https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html#index-Wanalyzer-malloc-leak</option_url>
-        <message type="str">leak of ‘ptr’</message>
-        <metadata type="dict">
-            <cwe type="int">401</cwe>
-        </metadata>
-    </item>
-</all>
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<root>
+ascii_table.c: In function ‘power’:
+        ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]
+        7 |         int arr[5];
+        |             ^~~
+        ascii_table.c: In function ‘decimal_to_hexadecimal’:
+        ascii_table.c:32:15: warning: implicit declaration of function ‘malloc’ [-Wimplicit-function-declaration]
+        32 |         ptr = malloc(sizeof(int));
+        |               ^~~~~~
+        ascii_table.c:2:1: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
+        1 | #include &lt;stdio.h&gt;
+        +++ |+#include &lt;stdlib.h&gt;
+        2 |
+        ascii_table.c:32:15: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
+        32 |         ptr = malloc(sizeof(int));
+        |               ^~~~~~
+        ascii_table.c:32:15: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
+        ascii_table.c:31:14: warning: variable ‘ptr’ set but not used [-Wunused-but-set-variable]
+        31 |         int *ptr;
+        |              ^~~
+        ascii_table.c:40:16: warning: leak of ‘ptr’ [CWE-401] [-Wanalyzer-malloc-leak]
+        40 |         return hex_num;
+        |                ^~~~~~~
+        ‘decimal_to_hexadecimal’: events 1-4
+        |
+        |   32 |         ptr = malloc(sizeof(int));
+        |      |               ^~~~~~~~~~~~~~~~~~~
+        |      |               |
+        |      |               (1) allocated here
+        |   33 |
+        |   34 |         for (int i = 0; dec_num != 0; i++) {
+        |      |                         ~~~~~~~~~~~~
+        |      |                                 |
+        |      |                                 (2) following ‘false’ branch (when ‘dec_num == 0’)...
+        |......
+        |   40 |         return hex_num;
+        |      |                ~~~~~~~
+        |      |                |
+        |      |                (3) ...to here
+        |      |                (4) ‘ptr’ leaks here; was allocated at (1)
+        |
+</root>

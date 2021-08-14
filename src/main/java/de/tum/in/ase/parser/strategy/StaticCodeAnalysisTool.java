@@ -9,8 +9,7 @@ public enum StaticCodeAnalysisTool {
     SWIFTLINT("checkstyle", "swiftlint-result.xml", new SwiftLintParser()),
     PMD("pmd", "pmd.xml", new PMDParser()),
     PMD_CPD("pmd-cpd", "cpd.xml", new PMDCPDParser()),
-    CPPCHECK("results", "cppcheck.xml", new CppCheckParser()),
-    GCC("all", "gcc.xml", new GccParser());
+    GCC("root", "gcc.xml", new GCCParser());
 
     private final String identifierTag;
     private final String filename;

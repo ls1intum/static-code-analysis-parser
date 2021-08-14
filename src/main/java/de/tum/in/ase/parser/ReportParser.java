@@ -52,6 +52,7 @@ public class ReportParser {
                 throw new IllegalArgumentException("File must not be null");
             }
 
+
             // The static code analysis parser only supports xml files.
             if (!FileUtils.getExtension(file).equals("xml")) {
                 throw new IllegalArgumentException("File must be xml format");
