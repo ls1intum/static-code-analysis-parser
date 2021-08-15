@@ -10,14 +10,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GCCParser implements ParserStrategy {
-
     // Locations in regex group
+    protected static final int NO_SEGS = 3;
     protected static final int FILE_POS = 1;
     protected static final int ROW_POS = 2;
     protected static final int COL_POS = 3;
     protected static final int TYPE_POS = 4;
     protected static final int DESC_POS = 5;
     protected static final int ERROR_POS = 6;
+    protected static final int BODY_SEG = 2;
 
     // Categories
     protected static final String MEMORY = "Memory";
@@ -26,6 +27,7 @@ public class GCCParser implements ParserStrategy {
     protected static final String UNDEFINED_BEHAVIOR = "UndefinedBehavior";
     protected static final String MISC = "Misc";
 
+    // Map that contains the matching category for each error
     protected static final Map<String,String> categories = new HashMap<>();
 
     public Report parse(Document doc) {
@@ -46,10 +48,12 @@ public class GCCParser implements ParserStrategy {
         List<Issue> issues = new ArrayList<>();
         Element gccLog = doc.getDocumentElement();
 
+        // Splits up entries by the following format: <filename>:<row>:<col>: <description>
+        // ?= is a look ahead regex, so we can keep the delimiter after the split
         String delim = "(?=(\\n(.)+.\\w:(\\d)+:(\\d)+:(.)+:(.)+))";
         String[] results = gccLog.getTextContent().split(delim);
 
-        // For simplicities' sake we use \n also as the delimiter, so we only get one actual match for each entry
+        // For simplicity, we use \n also as the delimiter, so we only get one actual match for each entry
         String infoEntryRegex = "([^:^\\n]+):(\\d+):(\\d+):\\s(\\w+\\s*\\w*):\\s(.+)(\\[.+\\])\\n";
         Pattern errorDetails = Pattern.compile(infoEntryRegex);
         Matcher m = errorDetails.matcher("");
@@ -72,15 +76,15 @@ public class GCCParser implements ParserStrategy {
                 boolean isAnalyzerIssue = false;
 
                 if (errorName != null) {
-                    String[] elements = entry.split("\n", 3);
-                    body = elements[2];
+                    String[] elements = entry.split("\n", NO_SEGS);
+                    body = elements[BODY_SEG];
                     issue.setMessage(description + "\n" + body);
                     isAnalyzerIssue = errorName.startsWith("[-Wanalyzer");
                 } else {
                     issue.setMessage(description);
                 }
 
-                // Set correct category, only real static analysis issues are categorized at the moment
+                // Set correct category, only real static analysis issues are categorized, see https://gcc.gnu.org/onlinedocs/gcc-11.1.0/gcc/Static-Analyzer-Options.html
                 if (isAnalyzerIssue) {
                     issue.setCategory(categories.get(errorName));
                 } else {
@@ -93,7 +97,7 @@ public class GCCParser implements ParserStrategy {
                 issue.setStartColumn(col);
                 issue.setEndColumn(col);
                 issue.setRule(errorName);
-                issue.setPriority(type); // Could potentially used by sorting at some point
+                issue.setPriority(type); // Could potentially used for sorting at some point
                 issues.add(issue);
             }
         }
