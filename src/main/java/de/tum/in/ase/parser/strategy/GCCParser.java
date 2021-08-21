@@ -104,7 +104,7 @@ public class GCCParser implements ParserStrategy {
         report.setIssues(issues);
     }
 
-    protected void initCategoryMapping() {
+    private void initCategoryMapping() {
         // Memory warnings
         categories.put("-Wanalyzer-free-of-non-heap", MEMORY);
         categories.put("-Wanalyzer-malloc-leak", MEMORY);
@@ -118,17 +118,17 @@ public class GCCParser implements ParserStrategy {
         categories.put("-Wanalyzer-use-of-uninitialized-value", UNDEFINED_BEHAVIOR);
         categories.put("-Wanalyzer-write-to-const", UNDEFINED_BEHAVIOR);
         categories.put("-Wanalyzer-write-to-string-literal", UNDEFINED_BEHAVIOR);
+        categories.put("-Wanalyzer-possible-null-argument", UNDEFINED_BEHAVIOR);
+        categories.put("-Wanalyzer-possible-null-dereference", UNDEFINED_BEHAVIOR);
 
         // Bad Practice
-        categories.put("-Wanalyzer-possible-null-argument", BAD_PRACTICE);
-        categories.put("-Wanalyzer-possible-null-dereference", BAD_PRACTICE);
         categories.put("-Wanalyzer-double-fclose", BAD_PRACTICE);
         categories.put("-Wanalyzer-too-complex", BAD_PRACTICE);
         categories.put("-Wanalyzer-stale-setjmp-buffer", BAD_PRACTICE);
 
         // Security
         categories.put("-Wanalyzer-exposure-through-output-file", SECURITY);
-        categories.put("-Wno-analyzer-unsafe-call-within-signal-handler", SECURITY);
+        categories.put("-Wanalyzer-unsafe-call-within-signal-handler", SECURITY);
         categories.put("-Wanalyzer-use-of-pointer-in-stale-stack-frame", SECURITY);
         categories.put("-Wanalyzer-tainted-array-index", SECURITY);
     }
