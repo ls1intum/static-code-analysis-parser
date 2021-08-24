@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <root>
-ascii_table.c: In function ‘power’:
+        ascii_table.c: In function ‘power’:
         ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]
         7 |         int arr[5];
         |             ^~~

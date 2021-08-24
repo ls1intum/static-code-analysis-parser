@@ -25,7 +25,7 @@ public class GCCParser implements ParserStrategy {
     protected static final String BAD_PRACTICE = "BadPractice";
     protected static final String SECURITY = "Security";
     protected static final String UNDEFINED_BEHAVIOR = "UndefinedBehavior";
-    protected static final String MISC = "Misc";
+    protected static final String MISC = "Misc"; // For various other results, that are not part of the static analysis
 
     // Map that contains the matching category for each error
     protected static final Map<String,String> categories = new HashMap<>();
@@ -63,8 +63,9 @@ public class GCCParser implements ParserStrategy {
 
             m.reset(entry);
 
-            // Extract categories
+            // Extract attributes
             if (m.find()) {
+                boolean isAnalyzerIssue;
                 String filename = m.group(FILE_POS).trim();
                 Integer row = Integer.parseInt(m.group(ROW_POS));
                 Integer col = Integer.parseInt(m.group(COL_POS));
@@ -73,20 +74,21 @@ public class GCCParser implements ParserStrategy {
                 String errorName = m.group(ERROR_POS);
                 String body;
 
-                boolean isAnalyzerIssue = false;
 
+                // Extract output after info line
                 if (errorName != null) {
                     String[] elements = entry.split("\n", NO_SEGS);
-                    body = elements[BODY_SEG];
+                    body = elements[BODY_SEG]; // Body contains additional debug info, including ASCII art
                     issue.setMessage(description + "\n" + body);
                     isAnalyzerIssue = errorName.startsWith("[-Wanalyzer");
                 } else {
-                    issue.setMessage(description);
+                    continue; // Only output errors that have a name associated with it
                 }
 
                 // Set correct category, only real static analysis issues are categorized, see https://gcc.gnu.org/onlinedocs/gcc-11.1.0/gcc/Static-Analyzer-Options.html
                 if (isAnalyzerIssue) {
-                    issue.setCategory(categories.get(errorName));
+                    String category = categories.get(errorName);
+                    issue.setCategory(category);
                 } else {
                     issue.setCategory(MISC);
                 }
@@ -97,7 +99,7 @@ public class GCCParser implements ParserStrategy {
                 issue.setStartColumn(col);
                 issue.setEndColumn(col);
                 issue.setRule(errorName);
-                issue.setPriority(type); // Could potentially used for sorting at some point
+                issue.setPriority(type); // Could potentially be used for sorting at some point
                 issues.add(issue);
             }
         }
@@ -106,30 +108,30 @@ public class GCCParser implements ParserStrategy {
 
     private void initCategoryMapping() {
         // Memory warnings
-        categories.put("-Wanalyzer-free-of-non-heap", MEMORY);
-        categories.put("-Wanalyzer-malloc-leak", MEMORY);
-        categories.put("-Wanalyzer-file-leak", MEMORY);
-        categories.put("-Wanalyzer-mismatching-deallocation", MEMORY);
+        categories.put("[-Wanalyzer-free-of-non-heap]", MEMORY);
+        categories.put("[-Wanalyzer-malloc-leak]", MEMORY);
+        categories.put("[-Wanalyzer-file-leak]", MEMORY);
+        categories.put("[-Wanalyzer-mismatching-deallocation]", MEMORY);
 
         // Undefined behavior
-        categories.put("-Wanalyzer-double-free", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-null-argument", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-use-after-free", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-use-of-uninitialized-value", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-write-to-const", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-write-to-string-literal", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-possible-null-argument", UNDEFINED_BEHAVIOR);
-        categories.put("-Wanalyzer-possible-null-dereference", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-double-free]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-null-argument]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-use-after-free]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-use-of-uninitialized-value]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-write-to-const]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-write-to-string-literal]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-possible-null-argument]", UNDEFINED_BEHAVIOR);
+        categories.put("[-Wanalyzer-possible-null-dereference]", UNDEFINED_BEHAVIOR);
 
         // Bad Practice
-        categories.put("-Wanalyzer-double-fclose", BAD_PRACTICE);
-        categories.put("-Wanalyzer-too-complex", BAD_PRACTICE);
-        categories.put("-Wanalyzer-stale-setjmp-buffer", BAD_PRACTICE);
+        categories.put("[-Wanalyzer-double-fclose]", BAD_PRACTICE);
+        categories.put("[-Wanalyzer-too-complex]", BAD_PRACTICE);
+        categories.put("[-Wanalyzer-stale-setjmp-buffer]", BAD_PRACTICE);
 
         // Security
-        categories.put("-Wanalyzer-exposure-through-output-file", SECURITY);
-        categories.put("-Wanalyzer-unsafe-call-within-signal-handler", SECURITY);
-        categories.put("-Wanalyzer-use-of-pointer-in-stale-stack-frame", SECURITY);
-        categories.put("-Wanalyzer-tainted-array-index", SECURITY);
+        categories.put("[-Wanalyzer-exposure-through-output-file]", SECURITY);
+        categories.put("[-Wanalyzer-unsafe-call-within-signal-handler]", SECURITY);
+        categories.put("[-Wanalyzer-use-of-pointer-in-stale-stack-frame]", SECURITY);
+        categories.put("[-Wanalyzer-tainted-array-index]", SECURITY);
     }
 }
