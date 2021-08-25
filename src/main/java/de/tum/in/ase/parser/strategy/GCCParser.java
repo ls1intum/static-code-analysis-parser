@@ -1,34 +1,50 @@
 package de.tum.in.ase.parser.strategy;
 
-import de.tum.in.ase.parser.domain.Issue;
-import de.tum.in.ase.parser.domain.Report;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import de.tum.in.ase.parser.domain.Issue;
+import de.tum.in.ase.parser.domain.Report;
+
 public class GCCParser implements ParserStrategy {
+
     // Locations in regex group
     protected static final int NO_SEGS = 3;
+
     protected static final int FILE_POS = 1;
+
     protected static final int ROW_POS = 2;
+
     protected static final int COL_POS = 3;
+
     protected static final int TYPE_POS = 4;
+
     protected static final int DESC_POS = 5;
+
     protected static final int ERROR_POS = 6;
+
     protected static final int BODY_SEG = 2;
 
     // Categories
     protected static final String MEMORY = "Memory";
+
     protected static final String BAD_PRACTICE = "BadPractice";
+
     protected static final String SECURITY = "Security";
+
     protected static final String UNDEFINED_BEHAVIOR = "UndefinedBehavior";
+
     protected static final String MISC = "Misc"; // For various other results, that are not part of the static analysis
 
     // Map that contains the matching category for each error
-    protected static final Map<String,String> categories = new HashMap<>();
+    protected static final Map<String, String> categories = new HashMap<>();
 
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.GCC);
@@ -74,14 +90,14 @@ public class GCCParser implements ParserStrategy {
                 String errorName = m.group(ERROR_POS);
                 String body;
 
-
                 // Extract output after info line
                 if (errorName != null) {
                     String[] elements = entry.split("\n", NO_SEGS);
                     body = elements[BODY_SEG]; // Body contains additional debug info, including ASCII art
                     issue.setMessage(description + "\n" + body);
                     isAnalyzerIssue = errorName.startsWith("[-Wanalyzer");
-                } else {
+                }
+                else {
                     continue; // Only output errors that have a name associated with it
                 }
 
@@ -89,7 +105,8 @@ public class GCCParser implements ParserStrategy {
                 if (isAnalyzerIssue) {
                     String category = categories.get(errorName);
                     issue.setCategory(category);
-                } else {
+                }
+                else {
                     issue.setCategory(MISC);
                 }
 
