@@ -94,7 +94,7 @@ public class GCCParser implements ParserStrategy {
                 if (errorName != null) {
                     String[] elements = entry.split("\n", NO_SEGS);
                     body = elements[BODY_SEG]; // Body contains additional debug info, including ASCII art
-                    issue.setMessage(description + "\n" + body);
+                    issue.setMessage(errorName + ": " + description + "\n" + body);
                     isAnalyzerIssue = errorName.startsWith("[-Wanalyzer");
                 }
                 else {
