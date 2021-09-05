@@ -46,6 +46,7 @@ public class GCCParser implements ParserStrategy {
     // Map that contains the matching category for each error
     protected static final Map<String, String> categories = new HashMap<>();
 
+    @Override
     public Report parse(Document doc) {
         Report report = new Report(StaticCodeAnalysisTool.GCC);
         extractIssues(doc, report);
@@ -58,8 +59,7 @@ public class GCCParser implements ParserStrategy {
      * @param doc Contains the output from GCC SCA
      * @param report The report the issues will be added to
      */
-
-    protected void extractIssues(Document doc, Report report) {
+    private void extractIssues(Document doc, Report report) {
         initCategoryMapping();
         List<Issue> issues = new ArrayList<>();
         Element gccLog = doc.getDocumentElement();
