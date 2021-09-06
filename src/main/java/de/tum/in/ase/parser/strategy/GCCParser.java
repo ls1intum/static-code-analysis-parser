@@ -57,15 +57,16 @@ public class GCCParser implements ParserStrategy {
     // e.g. "ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]".
     // A colon ":" is the separator symbol from GCC.
     private static final String HEADER_REGEX = "([^:^\\n]+):(\\d+):(\\d+):\\s(\\w+\\s*\\w*):\\s(.+)(\\[.+])";
-    //                                           ^          ^      ^      ^                 ^      ^
-    //                                           |          |      |      |                 |      |
-    //                                           |          |      |      |                 |      |
-    //                                           |          |      |      |                 |       +- error name eg. [-Wunused-but-set-variable]
-    //                                           |          |      |      |                 +- message text e.g. warning: variable ‘arr’ set but not used
-    //                                           |          |      |      +- type e.g. (error|warning|note)
-    //                                           |          |      +- column e.g. 13
-    //                                           |          +- row e.g. 7
-    //                                           +- filename e.g. ascii_table.c
+    /*                                           ^          ^      ^      ^                 ^      ^
+                                                 |          |      |      |                 |      |
+                                                 |          |      |      |                 |      |
+                                                 |          |      |      |                 |       +- error name eg. "[-Wunused-but-set-variable]"
+                                                 |          |      |      |                 +- message text e.g. " warning: variable ‘arr’ set but not used" (note the leading whitespace)
+                                                 |          |      |      +- type (error|warning|note)
+                                                 |          |      +- column e.g. "13"
+                                                 |          +- row e.g. "7"
+                                                 +- filename e.g. "ascii_table.c"
+     */
 
     // More generic regex similar to HEADER_REGEX, that describes the beginning of a basic GCC message, that is used to divide the output into chunks.
     // A look ahead regex (see "?=") is used, since we need to keep the delimiter after the split.
