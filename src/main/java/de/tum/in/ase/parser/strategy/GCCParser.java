@@ -51,11 +51,12 @@ public class GCCParser implements ParserStrategy {
 
     private static final String UNDEFINED_BEHAVIOR = "UndefinedBehavior";
 
-    private static final String MISC = "Misc"; // For various other results that are not part of the static analysis
+    // For various other results that are not part of the static analysis
+    private static final String MISC = "Misc";
 
     // Used to parse the first line of an issue which contains all the essential data
     // e.g. "ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]".
-    // A colon ":" is the separator symbol from GCC.
+    // A colon ":" is the separator symbol used by GCC.
     private static final String HEADER_REGEX = "([^:^\\n]+):(\\d+):(\\d+):\\s(\\w+\\s*\\w*):\\s(.+)(\\[.+])";
     /*                                           ^          ^      ^      ^                 ^      ^
                                                  |          |      |      |                 |      |
@@ -68,7 +69,7 @@ public class GCCParser implements ParserStrategy {
                                                  +- filename e.g. "ascii_table.c"
      */
 
-    // More generic regex similar to HEADER_REGEX, that describes the beginning of a basic GCC message, that is used to divide the output into chunks.
+    // More generic regex similar to HEADER_REGEX, that describes the beginning of a basic GCC message, which is used to divide the output into chunks.
     // A look ahead regex (see "?=") is used, since we need to keep the delimiter after the split.
     // We need to include new line, so we can guarantee that we actually match to a new message.
     private static final String DELIM_REGEX = "(?=(\\n([^:^\\n]+):(\\d)+:(\\d)+:(.)+:(.)+))";
@@ -128,6 +129,7 @@ public class GCCParser implements ParserStrategy {
             if (warningName == null) {
                 continue;
             }
+
             // warningName is included in the description, as it will not be shown be Artemis otherwise
             String message = warningName + ": " + description + "\n" + body;
 
