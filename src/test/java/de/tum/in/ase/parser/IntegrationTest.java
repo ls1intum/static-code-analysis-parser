@@ -3,10 +3,11 @@ package de.tum.in.ase.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,17 +36,16 @@ public class IntegrationTest {
 
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(toolReport);
-        String expected = null;
 
         try {
-            expected = Files.newBufferedReader(Path.of(EXPECTED_PATH + expectedJSONReportFileName)).readLine();
+            BufferedReader reader = Files.newBufferedReader(Paths.get(EXPECTED_PATH + expectedJSONReportFileName));
+            String expected = reader.readLine();
+            assertEquals(expected, actual);
         }
         catch (IOException e) {
             e.printStackTrace();
             Assertions.fail();
         }
-
-        assertEquals(expected, actual);
     }
 
     @Test
