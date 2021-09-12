@@ -7,9 +7,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXParseException;
 
@@ -21,9 +22,9 @@ import de.tum.in.ase.parser.utils.XmlUtils;
  */
 public class IntegrationTest {
 
-    private final static String EXPECTED_FOLDER_PATH = "src/test/java/expected/";
+    private final static Path EXPECTED_FOLDER_PATH = Paths.get("src", "test", "java", "expected");
 
-    private final static String REPORTS_FOLDER_PATH = "src/test/java/reports/";
+    private final static Path REPORTS_FOLDER_PATH = Paths.get("src", "test", "java", "reports");
 
     /**
      * Compares the parsed JSON report with the expected JSON report
@@ -31,21 +32,15 @@ public class IntegrationTest {
      * @param expectedJSONReportFileName  The name of the file that contains the parsed report
      * @throws ParserException If an exception occurs that is not already handled by the parser itself, e.g. caused by the json-parsing
      */
-    private void testParserWithFile(String toolGeneratedReportFileName, String expectedJSONReportFileName) throws ParserException {
-        File toolReport = new File(REPORTS_FOLDER_PATH + toolGeneratedReportFileName);
+    private void testParserWithFile(String toolGeneratedReportFileName, String expectedJSONReportFileName) throws ParserException, IOException {
+        File toolReport = new File(String.valueOf(REPORTS_FOLDER_PATH.resolve(toolGeneratedReportFileName)));
 
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(toolReport);
 
-        try {
-            BufferedReader reader = Files.newBufferedReader(Paths.get(EXPECTED_FOLDER_PATH + expectedJSONReportFileName));
-            String expected = reader.readLine();
-            assertEquals(expected, actual);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            Assertions.fail();
-        }
+        BufferedReader reader = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve(expectedJSONReportFileName));
+        String expected = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        assertEquals(expected, actual);
     }
 
     /**
@@ -55,63 +50,59 @@ public class IntegrationTest {
      * @throws ParserException If an exception occurs that is not already handled by the parser itself, e.g. caused by the json-parsing
      */
     private void testParserWithString(String fileName, String expected) throws ParserException {
-        File file = new File(REPORTS_FOLDER_PATH + fileName);
+        File file = new File(String.valueOf(REPORTS_FOLDER_PATH.resolve(fileName)));
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(file);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testCheckstyleParser() throws ParserException {
+    public void testCheckstyleParser() throws ParserException, IOException {
         testParserWithFile("checkstyle-result.xml", "checkstyle.txt");
     }
 
     @Test
-    public void testPMDCPDParser() throws ParserException {
+    public void testPMDCPDParser() throws ParserException, IOException {
         testParserWithFile("cpd.xml", "pmd_cpd.txt");
     }
 
     @Test
-    public void testPMDParser() throws ParserException {
+    public void testPMDParser() throws ParserException, IOException {
         testParserWithFile("pmd.xml", "pmd.txt");
     }
 
     @Test
-    public void testSpotbugsParser() throws ParserException {
+    public void testSpotbugsParser() throws ParserException, IOException {
         testParserWithFile("spotbugsXml.xml", "spotbugs.txt");
     }
 
     @Test
-    public void testSwiftlintParser() throws ParserException {
+    public void testSwiftlintParser() throws ParserException, IOException {
         testParserWithFile("swiftlint-result.xml", "swiftlint.txt");
     }
 
     @Test
-    public void testGCCParser() throws ParserException {
+    public void testGCCParser() throws ParserException, IOException {
         testParserWithFile("gcc.xml", "gcc.txt");
     }
 
     @Test
-    public void testParseInvalidFilename() throws ParserException {
+    public void testParseInvalidFilename() throws ParserException, IOException {
         testParserWithFile("cpd_invalid.txt", "invalid_filename.txt");
     }
 
     @Test
-    public void testParseInvalidXML() throws ParserException {
-        String fileName = "invalid_xml.xml";
-        Exception exception = assertThrows(SAXParseException.class, () -> XmlUtils.createDocumentBuilder().parse(new File(REPORTS_FOLDER_PATH + fileName)));
-        try {
-            String expectedInvalidXML = Files.newBufferedReader(Paths.get(EXPECTED_FOLDER_PATH + "invalid_xml.txt")).readLine();
-            // JSON transform escapes quotes, so we need to escape them too
-            testParserWithString("invalid_xml.xml", String.format(expectedInvalidXML, exception.toString().replaceAll("\"", "\\\\\"")));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void testParseInvalidXML() throws ParserException, IOException {
+        Exception exception = assertThrows(SAXParseException.class,
+                () -> XmlUtils.createDocumentBuilder().parse(new File(REPORTS_FOLDER_PATH.resolve("invalid_xml.xml").toString())));
+
+        String expectedInvalidXML = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve("invalid_xml.txt")).readLine();
+        // JSON transform escapes quotes, so we need to escape them too
+        testParserWithString("invalid_xml.xml", String.format(expectedInvalidXML, exception.toString().replaceAll("\"", "\\\\\"")));
     }
 
     @Test
-    public void testInvalidName() throws ParserException {
+    public void testInvalidName() throws ParserException, IOException {
         testParserWithFile("invalid_name.xml", "invalid_name.txt");
     }
 }
