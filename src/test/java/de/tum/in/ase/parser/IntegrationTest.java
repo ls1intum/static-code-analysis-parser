@@ -33,7 +33,7 @@ public class IntegrationTest {
      * @throws ParserException If an exception occurs that is not already handled by the parser itself, e.g. caused by the json-parsing
      */
     private void testParserWithFile(String toolGeneratedReportFileName, String expectedJSONReportFileName) throws ParserException, IOException {
-        File toolReport = new File(String.valueOf(REPORTS_FOLDER_PATH.resolve(toolGeneratedReportFileName)));
+        File toolReport = REPORTS_FOLDER_PATH.resolve(toolGeneratedReportFileName).toFile();
 
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(toolReport);
@@ -50,9 +50,11 @@ public class IntegrationTest {
      * @throws ParserException If an exception occurs that is not already handled by the parser itself, e.g. caused by the json-parsing
      */
     private void testParserWithString(String fileName, String expected) throws ParserException {
-        File file = new File(String.valueOf(REPORTS_FOLDER_PATH.resolve(fileName)));
+        File toolReport = REPORTS_FOLDER_PATH.resolve(fileName).toFile();
+
         ReportParser parser = new ReportParser();
-        String actual = parser.transformToJSONReport(file);
+        String actual = parser.transformToJSONReport(toolReport);
+
         assertEquals(expected, actual);
     }
 
