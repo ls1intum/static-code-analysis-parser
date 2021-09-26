@@ -4,14 +4,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 public enum StaticCodeAnalysisTool {
+
     SPOTBUGS("BugCollection", "spotbugsXml.xml", new SpotbugsParser()),
     CHECKSTYLE("checkstyle", "checkstyle-result.xml", new CheckstyleParser()),
     SWIFTLINT("checkstyle", "swiftlint-result.xml", new SwiftLintParser()),
     PMD("pmd", "pmd.xml", new PMDParser()),
-    PMD_CPD("pmd-cpd", "cpd.xml", new PMDCPDParser());
+    PMD_CPD("pmd-cpd", "cpd.xml", new PMDCPDParser()),
+    GCC("root", "gcc.xml", new GCCParser());
 
     private final String identifierTag;
+
     private final String filename;
+
     private final ParserStrategy strategy;
 
     StaticCodeAnalysisTool(String identifyingTag, String filename, ParserStrategy strategy) {

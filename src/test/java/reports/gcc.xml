@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+        ascii_table.c: In function ‘power’:
+        ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]
+        7 |         int arr[5];
+        |             ^~~
+        ascii_table.c: In function ‘decimal_to_hexadecimal’:
+        ascii_table.c:32:15: warning: implicit declaration of function ‘malloc’ [-Wimplicit-function-declaration]
+        32 |         ptr = malloc(sizeof(int));
+        |               ^~~~~~
+        ascii_table.c:2:1: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
+        1 | #include &lt;stdio.h&gt;
+        +++ |+#include &lt;stdlib.h&gt;
+        2 |
+        ascii_table.c:32:15: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
+        32 |         ptr = malloc(sizeof(int));
+        |               ^~~~~~
+        ascii_table.c:32:15: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
+        ascii_table.c:31:14: warning: variable ‘ptr’ set but not used [-Wunused-but-set-variable]
+        31 |         int *ptr;
+        |              ^~~
+        ascii_table.c:40:16: warning: leak of ‘ptr’ [CWE-401] [-Wanalyzer-malloc-leak]
+        40 |         return hex_num;
+        |                ^~~~~~~
+        ‘decimal_to_hexadecimal’: events 1-4
+        |
+        |   32 |         ptr = malloc(sizeof(int));
+        |      |               ^~~~~~~~~~~~~~~~~~~
+        |      |               |
+        |      |               (1) allocated here
+        |   33 |
+        |   34 |         for (int i = 0; dec_num != 0; i++) {
+        |      |                         ~~~~~~~~~~~~
+        |      |                                 |
+        |      |                                 (2) following ‘false’ branch (when ‘dec_num == 0’)...
+        |......
+        |   40 |         return hex_num;
+        |      |                ~~~~~~~
+        |      |                |
+        |      |                (3) ...to here
+        |      |                (4) ‘ptr’ leaks here; was allocated at (1)
+        |
+</root>
