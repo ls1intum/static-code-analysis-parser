@@ -9,4 +9,9 @@ Common parser functionality for static code analysis tools on continuous integra
 4.  Run `export GPG_TTY=$(tty)`
 5.  Run `mvn clean deploy -P release`  
     This should create the jar file, sources, javadoc and the pom file. All files should also have an additional signed *.asc file. You might find the files in your m2 home folder. 
-6.  Verify the artifact and release it to Maven Central. Open https://oss.sonatype.org/#stagingRepositories, close the repository to start the validation and as soon as the validation has finished successfully, release the artifact.
+6.  Verify the artifact and release it to Maven Central: 
+    
+    1. Open https://oss.sonatype.org/#stagingRepositories, `close` the repository to start the validation
+    2. As soon as the validation has finished successfully, `release` the artifact.
+    3. After some time, the new release should be available on https://search.maven.org/artifact/de.tum.in.ase/static-code-analysis-parser
+    4. You can also check https://packages.atlassian.com/maven-external/de/tum/in/ase/static-code-analysis-parser
