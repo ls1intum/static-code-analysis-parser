@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Issue {
 
+    public static final int MAX_STATIC_CODE_ANALYSIS_MESSAGE_LENGTH = 4500;
+
     // Path to the source file with unix file separators
     private String filePath;
 
@@ -100,7 +102,11 @@ public class Issue {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        if (message == null || message.length() <= MAX_STATIC_CODE_ANALYSIS_MESSAGE_LENGTH) {
+            this.message = message;
+        } else {
+            this.message = message.substring(0, MAX_STATIC_CODE_ANALYSIS_MESSAGE_LENGTH);
+        }
     }
 
     public String getPriority() {
