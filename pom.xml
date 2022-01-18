@@ -6,7 +6,7 @@
 
   <groupId>de.tum.in.ase</groupId>
   <artifactId>static-code-analysis-parser</artifactId>
-  <version>1.4.0</version>
+  <version>1.4.1</version>
 
   <packaging>jar</packaging>
 
@@ -27,7 +27,7 @@
       <name>Stephan Krusche</name>
       <email>krusche@in.tum.de</email>
       <organization>Technical University of Munich</organization>
-      <url>http://ase.in.tum.de/</url>
+      <url>http://ase.in.tum.de</url>
     </developer>
   </developers>
 
@@ -52,9 +52,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <jackson-databind.version>2.13.0</jackson-databind.version>
-    <junit-jupiter.version>5.8.1</junit-jupiter.version>
-    <spotless.version>2.17.0</spotless.version>
+    <jackson-databind.version>2.13.1</jackson-databind.version>
+    <junit-jupiter.version>5.8.2</junit-jupiter.version>
+    <spotless.version>2.20.0</spotless.version>
   </properties>
 
   <dependencies>
@@ -87,7 +87,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
+          <version>3.9.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -95,7 +95,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.2.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
