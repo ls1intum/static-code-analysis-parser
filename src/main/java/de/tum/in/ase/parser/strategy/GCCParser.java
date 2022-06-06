@@ -11,6 +11,7 @@ import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 
 public class GCCParser implements ParserStrategy {
+
     // General output is grouped into issues per function. At the beginning of these groups is a function part.
     private static final int FUNCTION_PART = 0;
 
@@ -63,6 +64,7 @@ public class GCCParser implements ParserStrategy {
     // e.g. "ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]".
     // A colon ":" is the separator symbol used by GCC.
     private static final String HEADER_REGEX = "([^:^\\n]+):(\\d+):(\\d+):\\s(\\w+\\s*\\w*):\\s(.+)(\\[.+])";
+
     /*                                           ^          ^      ^      ^                 ^      ^
                                                  |          |      |      |                 |      |
                                                  |          |      |      |                 |      |
@@ -73,8 +75,9 @@ public class GCCParser implements ParserStrategy {
                                                  |          +- row e.g. "7"
                                                  +- filename e.g. "ascii_table.c"
      */
+
     // All issues belonging to a function have a preceding message that states the functions name,
-    // e.g "buddy.c: In function ‘init_FL’: "
+    // e.g "buddy.c: In function ‘init_FL’: " For meaning of the individual regex expressions refer to HEADER_REGEX.
     private static final String FUNCTION_REGEX = "([^:^\\n]+): In function\\s[^:^\\n]+:\n";
 
     // A look ahead regex (see "?=") is used, since we need to keep the delimiter (HEADER_REGEX) after the
@@ -118,7 +121,7 @@ public class GCCParser implements ParserStrategy {
                 continue;
             }
             String function = parts[FUNCTION_PART];
-            String[] issueTextPerFunction = parts[ISSUE_PART].split("\n(?=" + HEADER_REGEX+")");
+            String[] issueTextPerFunction = parts[ISSUE_PART].split("\n(?=" + HEADER_REGEX + ")");
 
             for (String issueText : issueTextPerFunction) {
                 String[] segments = issueText.split("\n", SEGMENTS_COUNT);
