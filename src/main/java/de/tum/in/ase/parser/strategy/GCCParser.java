@@ -1,9 +1,6 @@
 package de.tum.in.ase.parser.strategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +11,15 @@ import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 
 public class GCCParser implements ParserStrategy {
+
+    // General output is grouped into issues per function. At the beginning of these groups is a function part.
+    private static final int FUNCTION_PART = 0;
+
+    // After the function part, the actual issues follow. These need to be split to get individual issues.
+    private static final int ISSUE_PART = 1;
+
+    // Output per function is split into two parts, one containing the function, the other containing the issues.
+    private static final int PART_COUNT = 2;
 
     // The message is split into two segments
     private static final int SEGMENTS_COUNT = 2;
@@ -58,6 +64,7 @@ public class GCCParser implements ParserStrategy {
     // e.g. "ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]".
     // A colon ":" is the separator symbol used by GCC.
     private static final String HEADER_REGEX = "([^:^\\n]+):(\\d+):(\\d+):\\s(\\w+\\s*\\w*):\\s(.+)(\\[.+])";
+
     /*                                           ^          ^      ^      ^                 ^      ^
                                                  |          |      |      |                 |      |
                                                  |          |      |      |                 |      |
@@ -69,10 +76,14 @@ public class GCCParser implements ParserStrategy {
                                                  +- filename e.g. "ascii_table.c"
      */
 
-    // More generic regex similar to HEADER_REGEX, that describes the beginning of a basic GCC message, which is used to divide the output into chunks.
-    // A look ahead regex (see "?=") is used, since we need to keep the delimiter after the split.
-    // We need to include new line, so we can guarantee that we actually match to a new message.
-    private static final String DELIM_REGEX = "(?=(\\n([^:^\\n]+):(\\d)+:(\\d)+:(.)+:(.)+))";
+    // All issues belonging to a function have a preceding message that states the functions name,
+    // e.g "buddy.c: In function ‘init_FL’: " For meaning of the individual regex expressions refer to HEADER_REGEX.
+    private static final String FUNCTION_REGEX = "([^:^\\n]+): In function\\s[^:^\\n]+:\n";
+
+    // A look ahead regex (see "?=") is used, since we need to keep the delimiter (HEADER_REGEX) after the
+    // split, so we can extract the issue information.
+    // We also need to include a new line (\n), so we can guarantee that we actually match to a new message.
+    private static final String DELIM_REGEX = "\\n(?=" + FUNCTION_REGEX + ")";
 
     @Override
     public Report parse(Document doc) {
@@ -89,73 +100,79 @@ public class GCCParser implements ParserStrategy {
      */
     private void extractIssues(Document doc, Report report) {
         Element gccLog = doc.getDocumentElement();
+        List<String> sectionsPerFunction = new ArrayList<>(Arrays.asList(gccLog.getTextContent().split(DELIM_REGEX)));
+        // Do we have at least one match?
+        if (sectionsPerFunction.size() < 1) {
+            return;
+        }
+        // Remove string before first match
+        sectionsPerFunction.remove(0);
 
-        String[] logItems = gccLog.getTextContent().split(DELIM_REGEX);
+        initCategoryMapping();
 
         Pattern pattern = Pattern.compile(HEADER_REGEX);
         Matcher matcher = pattern.matcher("");
 
-        initCategoryMapping();
-
         List<Issue> issues = new ArrayList<>();
 
-        for (String entry : logItems) {
-
-            // Chops off the leading \n which makes parsing more clear, as we avoid an empty extra segment
-            String[] segments = entry.substring(1).split("\n", SEGMENTS_COUNT);
-
-            if (segments.length < 2) {
+        for (String sectionPerFunction : sectionsPerFunction) {
+            String[] parts = sectionPerFunction.split("\n", PART_COUNT);
+            if (parts.length < 2) {
                 continue;
             }
+            String function = parts[FUNCTION_PART];
+            String[] issueTextPerFunction = parts[ISSUE_PART].split("\n(?=" + HEADER_REGEX + ")");
 
-            String header = segments[HEADER_SEGMENT_POS];
-            String body = segments[BODY_SEGMENT_POS];
+            for (String issueText : issueTextPerFunction) {
+                String[] segments = issueText.split("\n", SEGMENTS_COUNT);
+                String header = segments[HEADER_SEGMENT_POS];
+                String body = segments[BODY_SEGMENT_POS];
 
-            matcher.reset(header);
+                matcher.reset(header);
 
-            if (!matcher.find()) {
-                continue;
+                if (!matcher.find()) {
+                    continue;
+                }
+
+                // Construct issueText details based on regex groups
+                String filename = matcher.group(FILE_POS).trim();
+                Integer row = Integer.parseInt(matcher.group(ROW_POS));
+                Integer col = Integer.parseInt(matcher.group(COLUMN_POS));
+                String type = matcher.group(TYPE_POS);
+                String description = matcher.group(DESCRIPTION_POS);
+                String warningName = matcher.group(ERROR_POS);
+
+                // Only output warnings that have a name associated with it
+                if (warningName == null) {
+                    continue;
+                }
+
+                // warningName is included in the description, as it will not be shown be Artemis otherwise
+                String message = function + "\n" + warningName + description + "\nTrace:\n" + body;
+
+                Issue issue = new Issue(null);
+
+                issue.setMessage(message);
+                issue.setFilePath(filename);
+                issue.setStartLine(row);
+                issue.setEndLine(row);
+                issue.setStartColumn(col);
+                issue.setEndColumn(col);
+                issue.setRule(warningName);
+                issue.setPriority(type); // Could potentially be used for sorting at some point, not displayed by Artemis
+
+                boolean isAnalyzerIssue = warningName.startsWith(ANALYZER_PREFIX);
+
+                // Set correct category, only real static analysis issues are categorized, see https://gcc.gnu.org/onlinedocs/gcc-11.1.0/gcc/Static-Analyzer-Options.html
+                if (isAnalyzerIssue) {
+                    String category = categories.get(warningName);
+                    issue.setCategory(category);
+                }
+                else {
+                    issue.setCategory(MISC);
+                }
+                issues.add(issue);
             }
-
-            // Construct issue details based on regex groups
-            String filename = matcher.group(FILE_POS).trim();
-            Integer row = Integer.parseInt(matcher.group(ROW_POS));
-            Integer col = Integer.parseInt(matcher.group(COLUMN_POS));
-            String type = matcher.group(TYPE_POS);
-            String description = matcher.group(DESCRIPTION_POS);
-            String warningName = matcher.group(ERROR_POS);
-
-            // Only output warnings that have a name associated with it
-            if (warningName == null) {
-                continue;
-            }
-
-            // warningName is included in the description, as it will not be shown be Artemis otherwise
-            String message = warningName + ": " + description + "\n" + body;
-
-            Issue issue = new Issue(null);
-
-            issue.setMessage(message);
-            issue.setFilePath(filename);
-            issue.setStartLine(row);
-            issue.setEndLine(row);
-            issue.setStartColumn(col);
-            issue.setEndColumn(col);
-            issue.setRule(warningName);
-            issue.setPriority(type); // Could potentially be used for sorting at some point, not displayed by Artemis
-
-            boolean isAnalyzerIssue = warningName.startsWith(ANALYZER_PREFIX);
-
-            // Set correct category, only real static analysis issues are categorized, see https://gcc.gnu.org/onlinedocs/gcc-11.1.0/gcc/Static-Analyzer-Options.html
-            if (isAnalyzerIssue) {
-                String category = categories.get(warningName);
-                issue.setCategory(category);
-            }
-            else {
-                issue.setCategory(MISC);
-            }
-
-            issues.add(issue);
         }
         report.setIssues(issues);
     }

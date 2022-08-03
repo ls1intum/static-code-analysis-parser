@@ -1,43 +1,1334 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
-        ascii_table.c: In function ‘power’:
-        ascii_table.c:7:13: warning: variable ‘arr’ set but not used [-Wunused-but-set-variable]
-        7 |         int arr[5];
-        |             ^~~
-        ascii_table.c: In function ‘decimal_to_hexadecimal’:
-        ascii_table.c:32:15: warning: implicit declaration of function ‘malloc’ [-Wimplicit-function-declaration]
-        32 |         ptr = malloc(sizeof(int));
-        |               ^~~~~~
-        ascii_table.c:2:1: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
-        1 | #include &lt;stdio.h&gt;
-        +++ |+#include &lt;stdlib.h&gt;
-        2 |
-        ascii_table.c:32:15: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
-        32 |         ptr = malloc(sizeof(int));
-        |               ^~~~~~
-        ascii_table.c:32:15: note: include ‘&lt;stdlib.h&gt;’ or provide a declaration of ‘malloc’
-        ascii_table.c:31:14: warning: variable ‘ptr’ set but not used [-Wunused-but-set-variable]
-        31 |         int *ptr;
-        |              ^~~
-        ascii_table.c:40:16: warning: leak of ‘ptr’ [CWE-401] [-Wanalyzer-malloc-leak]
-        40 |         return hex_num;
-        |                ^~~~~~~
-        ‘decimal_to_hexadecimal’: events 1-4
-        |
-        |   32 |         ptr = malloc(sizeof(int));
-        |      |               ^~~~~~~~~~~~~~~~~~~
-        |      |               |
-        |      |               (1) allocated here
-        |   33 |
-        |   34 |         for (int i = 0; dec_num != 0; i++) {
-        |      |                         ~~~~~~~~~~~~
-        |      |                                 |
-        |      |                                 (2) following ‘false’ branch (when ‘dec_num == 0’)...
-        |......
-        |   40 |         return hex_num;
-        |      |                ~~~~~~~
-        |      |                |
-        |      |                (3) ...to here
-        |      |                (4) ‘ptr’ leaks here; was allocated at (1)
-        |
+buddy.c: In function ‘print_BL’:
+buddy.c:78:23: warning: format ‘%p’ expects argument of type ‘void *’, but argument 2 has type ‘struct blockList *’ [-Wformat=]
+78 |     printf(&quot;\titer = %p, next = %p, block = %p\n&quot;, blockList, blockList-&gt;next,
+|                      ~^                            ~~~~~~~~~
+|                       |                            |
+|                       void *                       struct blockList *
+buddy.c:78:34: warning: format ‘%p’ expects argument of type ‘void *’, but argument 3 has type ‘struct blockList *’ [-Wformat=]
+78 |     printf(&quot;\titer = %p, next = %p, block = %p\n&quot;, blockList, blockList-&gt;next,
+|                                 ~^                            ~~~~~~~~~~~~~~~
+|                                  |                                     |
+|                                  void *                                struct blockList *
+buddy.c:78:46: warning: format ‘%p’ expects argument of type ‘void *’, but argument 4 has type ‘struct block *’ [-Wformat=]
+78 |     printf(&quot;\titer = %p, next = %p, block = %p\n&quot;, blockList, blockList-&gt;next,
+|                                             ~^
+|                                              |
+|                                              void *
+79 |            blockList-&gt;block);
+|            ~~~~~~~~~~~~~~~~
+|                     |
+|                     struct block *
+buddy.c: In function ‘free_FL’:
+buddy.c:105:36: warning: unused parameter ‘freeList’ [-Wunused-parameter]
+105 | void free_FL(struct freeBlockList *freeList) {}
+|              ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+buddy.c: In function ‘print_FL’:
+buddy.c:216:21: warning: format ‘%p’ expects argument of type ‘void *’, but argument 2 has type ‘struct freeBlockListE *’ [-Wformat=]
+216 |     printf(&quot;iter = %p, next = %p, list = %p\n&quot;, iter, iter-&gt;next, iter-&gt;list);
+|                    ~^                           ~~~~
+|                     |                           |
+|                     void *                      struct freeBlockListE *
+buddy.c:216:32: warning: format ‘%p’ expects argument of type ‘void *’, but argument 3 has type ‘struct freeBlockListE *’ [-Wformat=]
+216 |     printf(&quot;iter = %p, next = %p, list = %p\n&quot;, iter, iter-&gt;next, iter-&gt;list);
+|                               ~^                      ~~~~~~~~~~
+|                                |                          |
+|                                void *                     struct freeBlockListE *
+buddy.c:216:43: warning: format ‘%p’ expects argument of type ‘void *’, but argument 4 has type ‘struct blockList *’ [-Wformat=]
+216 |     printf(&quot;iter = %p, next = %p, list = %p\n&quot;, iter, iter-&gt;next, iter-&gt;list);
+|                                          ~^                       ~~~~~~~~~~
+|                                           |                           |
+|                                           void *                      struct blockList *
+buddy.c: In function ‘free_UL’:
+buddy.c:234:36: warning: unused parameter ‘usedList’ [-Wunused-parameter]
+234 | void free_UL(struct usedBlockList *usedList) {}
+|              ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+buddy.c: In function ‘splitBlock’:
+buddy.c:46:11: warning: dereference of possibly-NULL ‘b’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+46 |   b-&gt;addr = a-&gt;addr + a-&gt;size;
+|   ~~~~~~~~^~~~~~~~~~~~~~~~~~~
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-24
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘false’ branch...
+|......
+|  127 |   if (fl-&gt;next == NULL) {
+|      |      ~~~~~~~~~
+|      |      |  |
+|      |      |  (19) ...to here
+|      |      (20) following ‘true’ branch...
+|  128 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (21) ...to here
+|      |        (22) following ‘true’ branch...
+|  129 |       fl-&gt;list = splitBlock(fl-&gt;list);
+|      |                  ~~~~~~~~~~~~~~~~~~~~
+|      |                  |
+|      |                  (23) ...to here
+|      |                  (24) calling ‘splitBlock’ from ‘gen_extract_FL’
+|
++--&gt; ‘splitBlock’: events 25-27
+|
+|   39 | struct blockList *splitBlock(struct blockList *first) {
+|      |                   ^~~~~~~~~~
+|      |                   |
+|      |                   (25) entry to ‘splitBlock’
+|......
+|   43 |   struct block *b = (struct block *)malloc(sizeof(struct block));
+|      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                     |
+|      |                                     (26) this call could return NULL
+|......
+|   46 |   b-&gt;addr = a-&gt;addr + a-&gt;size;
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (27) ‘b’ could be NULL: unchecked value from (26)
+|
+buddy.c:50:17: warning: dereference of possibly-NULL ‘second’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+50 |   second-&gt;block = b;
+|   ~~~~~~~~~~~~~~^~~
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-24
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘false’ branch...
+|......
+|  127 |   if (fl-&gt;next == NULL) {
+|      |      ~~~~~~~~~
+|      |      |  |
+|      |      |  (19) ...to here
+|      |      (20) following ‘true’ branch...
+|  128 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (21) ...to here
+|      |        (22) following ‘true’ branch...
+|  129 |       fl-&gt;list = splitBlock(fl-&gt;list);
+|      |                  ~~~~~~~~~~~~~~~~~~~~
+|      |                  |
+|      |                  (23) ...to here
+|      |                  (24) calling ‘splitBlock’ from ‘gen_extract_FL’
+|
++--&gt; ‘splitBlock’: events 25-27
+|
+|   39 | struct blockList *splitBlock(struct blockList *first) {
+|      |                   ^~~~~~~~~~
+|      |                   |
+|      |                   (25) entry to ‘splitBlock’
+|   40 |   struct blockList *second =
+|   41 |       (struct blockList *)malloc(sizeof(struct blockList));
+|      |                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                           |
+|      |                           (26) this call could return NULL
+|......
+|   50 |   second-&gt;block = b;
+|      |   ~~~~~~~~~~~~~~~~~
+|      |                 |
+|      |                 (27) ‘second’ could be NULL: unchecked value from (26)
+|
+buddy.c: In function ‘init_FL’:
+buddy.c:95:18: warning: dereference of possibly-NULL ‘freeList’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+95 |   freeList-&gt;head =
+|   ~~~~~~~~~~~~~~~^
+96 |       (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+‘main’: events 1-3
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  362 |       (struct freeBlockList *)malloc(sizeof(struct freeBlockList));
+|      |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                               |
+|      |                               (2) this call could return NULL
+|  363 |   init_FL(freeList, numBlocks);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (3) calling ‘init_FL’ from ‘main’
+|
++--&gt; ‘init_FL’: events 4-5
+|
+|   94 | void init_FL(struct freeBlockList *freeList, unsigned int numBlocks) {
+|      |      ^~~~~~~
+|      |      |
+|      |      (4) entry to ‘init_FL’
+|   95 |   freeList-&gt;head =
+|      |   ~~~~~~~~~~~~~~~~
+|      |                  |
+|      |                  (5) ‘freeList’ could be NULL: unchecked value from (2)
+|   96 |       (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|
+buddy.c:97:24: warning: dereference of possibly-NULL ‘*freeList.head’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+97 |   freeList-&gt;head-&gt;next = NULL;
+|                        ^
+‘main’: events 1-2
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  363 |   init_FL(freeList, numBlocks);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (2) calling ‘init_FL’ from ‘main’
+|
++--&gt; ‘init_FL’: events 3-4
+|
+|   94 | void init_FL(struct freeBlockList *freeList, unsigned int numBlocks) {
+|      |      ^~~~~~~
+|      |      |
+|      |      (3) entry to ‘init_FL’
+|   95 |   freeList-&gt;head =
+|   96 |       (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                |
+|      |                                (4) this call could return NULL
+|
+‘init_FL’: event 5
+|
+|   97 |   freeList-&gt;head-&gt;next = NULL;
+|      |                        ^
+|      |                        |
+|      |                        (5) ‘*freeList.head’ could be NULL: unchecked value from (4)
+|
+buddy.c:99:30: warning: dereference of possibly-NULL ‘*freeList_18(D)-&gt;head.list’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+99 |   freeList-&gt;head-&gt;list-&gt;next = NULL;
+|                              ^
+‘main’: events 1-2
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  363 |   init_FL(freeList, numBlocks);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (2) calling ‘init_FL’ from ‘main’
+|
++--&gt; ‘init_FL’: events 3-4
+|
+|   94 | void init_FL(struct freeBlockList *freeList, unsigned int numBlocks) {
+|      |      ^~~~~~~
+|      |      |
+|      |      (3) entry to ‘init_FL’
+|......
+|   98 |   freeList-&gt;head-&gt;list = (struct blockList *)malloc(sizeof(struct blockList));
+|      |                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                              |
+|      |                                              (4) this call could return NULL
+|
+‘init_FL’: event 5
+|
+|   99 |   freeList-&gt;head-&gt;list-&gt;next = NULL;
+|      |                              ^
+|      |                              |
+|      |                              (5) ‘*freeList_18(D)-&gt;head.list’ could be NULL: unchecked value from (4)
+|
+buddy.c:101:37: warning: dereference of possibly-NULL ‘*_10-&gt;list.block’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+101 |   freeList-&gt;head-&gt;list-&gt;block-&gt;addr = 0;
+|   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+‘main’: events 1-2
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  363 |   init_FL(freeList, numBlocks);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (2) calling ‘init_FL’ from ‘main’
+|
++--&gt; ‘init_FL’: events 3-5
+|
+|   94 | void init_FL(struct freeBlockList *freeList, unsigned int numBlocks) {
+|      |      ^~~~~~~
+|      |      |
+|      |      (3) entry to ‘init_FL’
+|......
+|  100 |   freeList-&gt;head-&gt;list-&gt;block = (struct block *)malloc(sizeof(struct block));
+|      |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                                 |
+|      |                                                 (4) this call could return NULL
+|  101 |   freeList-&gt;head-&gt;list-&gt;block-&gt;addr = 0;
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                     |
+|      |                                     (5) ‘*_10-&gt;list.block’ could be NULL: unchecked value from (4)
+|
+buddy.c: In function ‘gen_extract_FL’:
+buddy.c:138:16: warning: dereference of possibly-NULL ‘el’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+138 |       el-&gt;next = NULL;
+|                ^
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-24
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘false’ branch...
+|......
+|  127 |   if (fl-&gt;next == NULL) {
+|      |      ~~~~~~~~~
+|      |      |  |
+|      |      |  (19) ...to here
+|      |      (20) following ‘true’ branch...
+|  128 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (21) ...to here
+|      |        (22) following ‘true’ branch...
+|  129 |       fl-&gt;list = splitBlock(fl-&gt;list);
+|      |                  ~~~~~~~~~~~~~~~~~~~~
+|      |                  |
+|      |                  (23) ...to here
+|  130 |       return gen_extract_FL(freeList, size);
+|      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |              |
+|      |              (24) calling ‘gen_extract_FL’ from ‘gen_extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 25-32
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (25) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (26) following ‘false’ branch...
+|......
+|  127 |   if (fl-&gt;next == NULL) {
+|      |      ~~~~~~~~~
+|      |      |  |
+|      |      |  (27) ...to here
+|      |      (28) following ‘true’ branch...
+|  128 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (29) ...to here
+|      |        (30) following ‘false’ branch...
+|......
+|  132 |       struct blockList *bl = fl-&gt;list;
+|      |                         ~~
+|      |                         |
+|      |                         (31) ...to here
+|......
+|  137 |           (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                    |
+|      |                                    (32) this call could return NULL
+|
+‘gen_extract_FL’: event 33
+|
+|  138 |       el-&gt;next = NULL;
+|      |                ^
+|      |                |
+|      |                (33) ‘el’ could be NULL: unchecked value from (32)
+|
+buddy.c: In function ‘insert_FL’:
+buddy.c:199:26: warning: dereference of possibly-NULL ‘*freeList.head’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+199 |     freeList-&gt;head-&gt;next = NULL;
+|                          ^
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-21
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘true’ branch...
+|  111 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (19) ...to here
+|      |        (20) following ‘true’ branch...
+|  112 |       struct block *ret = fl-&gt;list-&gt;block;
+|      |                           ~~~~~~~~
+|      |                             |
+|      |                             (21) ...to here
+|
+&lt;------+
+|
+‘extract_FL’: event 22
+|
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (22) returning to ‘extract_FL’ from ‘gen_extract_FL’
+|
+&lt;------+
+|
+‘allocate’: events 23-25
+|
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (23) returning to ‘allocate’ from ‘extract_FL’
+|  291 |
+|  292 |   if (b == NULL) {
+|      |      ~
+|      |      |
+|      |      (24) following ‘false’ branch (when ‘b’ is non-NULL)...
+|......
+|  295 |   setBlockTo(b, &apos;P&apos;, mem);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (25) ...to here
+|
+&lt;------+
+|
+‘main’: events 26-37
+|
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (29) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (30) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (31) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (32) ...to here
+|      |     (33) following ‘case 102:’ branch...
+|......
+|  392 |     case &apos;f&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (34) ...to here
+|......
+|  395 |       if (n != 1) {
+|      |          ~
+|      |          |
+|      |          (35) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  400 |       if (deallocate(freeList, usedList, num, mem)) {
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (36) ...to here
+|      |           (37) calling ‘deallocate’ from ‘main’
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          ||
+|      |          |(26) returning to ‘main’ from ‘allocate’
+|      |          (27) following ‘false’ branch...
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|  417 |                    mem)) {
+|      |                    ~~~~
+|......
+|  421 |       idx++;
+|      |       ~~~~~
+|      |          |
+|      |          (28) ...to here
+|
++--&gt; ‘deallocate’: events 38-41
+|
+|  302 | int deallocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~~~
+|      |     |
+|      |     (38) entry to ‘deallocate’
+|  303 |                unsigned int idx, char *mem) {
+|  304 |   if (usedList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (39) following ‘false’ branch...
+|......
+|  308 |   struct block *b = extract_UL(usedList, idx);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (40) ...to here
+|      |                     (41) calling ‘extract_UL’ from ‘deallocate’
+|
++--&gt; ‘extract_UL’: events 42-46
+|
+|  236 | struct block *extract_UL(struct usedBlockList *usedList, unsigned int idx) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (42) entry to ‘extract_UL’
+|  237 |   if (usedList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (43) following ‘false’ branch...
+|......
+|  240 |   if (usedList-&gt;head-&gt;idx == idx) {
+|      |      ~~~~~~~~~~~~~~~
+|      |      |        |
+|      |      |        (44) ...to here
+|      |      (45) following ‘true’ branch...
+|  241 |     struct usedBlockListE *el = usedList-&gt;head;
+|      |                            ~~
+|      |                            |
+|      |                            (46) ...to here
+|
+&lt;------+
+|
+‘deallocate’: events 47-50
+|
+|  308 |   struct block *b = extract_UL(usedList, idx);
+|      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (47) returning to ‘deallocate’ from ‘extract_UL’
+|  309 |
+|  310 |   if (b == NULL) {
+|      |      ~
+|      |      |
+|      |      (48) following ‘false’ branch (when ‘b’ is non-NULL)...
+|......
+|  313 |   setBlockTo(b, &apos;F&apos;, mem);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (49) ...to here
+|  314 |
+|  315 |   insert_FL(freeList, b);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (50) calling ‘insert_FL’ from ‘deallocate’
+|
++--&gt; ‘insert_FL’: events 51-54
+|
+|  195 | void insert_FL(struct freeBlockList *freeList, struct block *block) {
+|      |      ^~~~~~~~~
+|      |      |
+|      |      (51) entry to ‘insert_FL’
+|  196 |   if (freeList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (52) following ‘true’ branch...
+|  197 |     freeList-&gt;head =
+|  198 |         (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                  |
+|      |                                  (53) ...to here
+|      |                                  (54) this call could return NULL
+|
+‘insert_FL’: event 55
+|
+|  199 |     freeList-&gt;head-&gt;next = NULL;
+|      |                          ^
+|      |                          |
+|      |                          (55) ‘*freeList.head’ could be NULL: unchecked value from (54)
+|
+buddy.c:201:32: warning: dereference of possibly-NULL ‘*freeList_13(D)-&gt;head.list’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+201 |     freeList-&gt;head-&gt;list-&gt;next = NULL;
+|                                ^
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-21
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘true’ branch...
+|  111 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (19) ...to here
+|      |        (20) following ‘true’ branch...
+|  112 |       struct block *ret = fl-&gt;list-&gt;block;
+|      |                           ~~~~~~~~
+|      |                             |
+|      |                             (21) ...to here
+|
+&lt;------+
+|
+‘extract_FL’: event 22
+|
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (22) returning to ‘extract_FL’ from ‘gen_extract_FL’
+|
+&lt;------+
+|
+‘allocate’: events 23-25
+|
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (23) returning to ‘allocate’ from ‘extract_FL’
+|  291 |
+|  292 |   if (b == NULL) {
+|      |      ~
+|      |      |
+|      |      (24) following ‘false’ branch (when ‘b’ is non-NULL)...
+|......
+|  295 |   setBlockTo(b, &apos;P&apos;, mem);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (25) ...to here
+|
+&lt;------+
+|
+‘main’: events 26-37
+|
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (29) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (30) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (31) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (32) ...to here
+|      |     (33) following ‘case 102:’ branch...
+|......
+|  392 |     case &apos;f&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (34) ...to here
+|......
+|  395 |       if (n != 1) {
+|      |          ~
+|      |          |
+|      |          (35) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  400 |       if (deallocate(freeList, usedList, num, mem)) {
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (36) ...to here
+|      |           (37) calling ‘deallocate’ from ‘main’
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          ||
+|      |          |(26) returning to ‘main’ from ‘allocate’
+|      |          (27) following ‘false’ branch...
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|  417 |                    mem)) {
+|      |                    ~~~~
+|......
+|  421 |       idx++;
+|      |       ~~~~~
+|      |          |
+|      |          (28) ...to here
+|
++--&gt; ‘deallocate’: events 38-41
+|
+|  302 | int deallocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~~~
+|      |     |
+|      |     (38) entry to ‘deallocate’
+|  303 |                unsigned int idx, char *mem) {
+|  304 |   if (usedList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (39) following ‘false’ branch...
+|......
+|  308 |   struct block *b = extract_UL(usedList, idx);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (40) ...to here
+|      |                     (41) calling ‘extract_UL’ from ‘deallocate’
+|
++--&gt; ‘extract_UL’: events 42-46
+|
+|  236 | struct block *extract_UL(struct usedBlockList *usedList, unsigned int idx) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (42) entry to ‘extract_UL’
+|  237 |   if (usedList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (43) following ‘false’ branch...
+|......
+|  240 |   if (usedList-&gt;head-&gt;idx == idx) {
+|      |      ~~~~~~~~~~~~~~~
+|      |      |        |
+|      |      |        (44) ...to here
+|      |      (45) following ‘true’ branch...
+|  241 |     struct usedBlockListE *el = usedList-&gt;head;
+|      |                            ~~
+|      |                            |
+|      |                            (46) ...to here
+|
+&lt;------+
+|
+‘deallocate’: events 47-50
+|
+|  308 |   struct block *b = extract_UL(usedList, idx);
+|      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (47) returning to ‘deallocate’ from ‘extract_UL’
+|  309 |
+|  310 |   if (b == NULL) {
+|      |      ~
+|      |      |
+|      |      (48) following ‘false’ branch (when ‘b’ is non-NULL)...
+|......
+|  313 |   setBlockTo(b, &apos;F&apos;, mem);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (49) ...to here
+|  314 |
+|  315 |   insert_FL(freeList, b);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (50) calling ‘insert_FL’ from ‘deallocate’
+|
++--&gt; ‘insert_FL’: events 51-54
+|
+|  195 | void insert_FL(struct freeBlockList *freeList, struct block *block) {
+|      |      ^~~~~~~~~
+|      |      |
+|      |      (51) entry to ‘insert_FL’
+|  196 |   if (freeList-&gt;head == NULL) {
+|      |      ~
+|      |      |
+|      |      (52) following ‘true’ branch...
+|  197 |     freeList-&gt;head =
+|  198 |         (struct freeBlockListE *)malloc(sizeof(struct freeBlockListE));
+|      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                  |
+|      |                                  (53) ...to here
+|  199 |     freeList-&gt;head-&gt;next = NULL;
+|  200 |     freeList-&gt;head-&gt;list = (struct blockList *)malloc(sizeof(struct blockList));
+|      |                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                                |
+|      |                                                (54) this call could return NULL
+|
+‘insert_FL’: event 55
+|
+|  201 |     freeList-&gt;head-&gt;list-&gt;next = NULL;
+|      |                                ^
+|      |                                |
+|      |                                (55) ‘*freeList_13(D)-&gt;head.list’ could be NULL: unchecked value from (54)
+|
+buddy.c: In function ‘init_UL’:
+buddy.c:232:63: warning: dereference of possibly-NULL ‘usedList’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+232 | void init_UL(struct usedBlockList *usedList) { usedList-&gt;head = NULL; }
+|                                                               ^
+‘main’: events 1-3
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  366 |       (struct usedBlockList *)malloc(sizeof(struct usedBlockList));
+|      |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                               |
+|      |                               (2) this call could return NULL
+|  367 |   init_UL(usedList);
+|      |   ~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (3) calling ‘init_UL’ from ‘main’
+|
++--&gt; ‘init_UL’: event 4
+|
+|  232 | void init_UL(struct usedBlockList *usedList) { usedList-&gt;head = NULL; }
+|      |      ^~~~~~~
+|      |      |
+|      |      (4) entry to ‘init_UL’
+|
+‘init_UL’: event 5
+|
+|  232 | void init_UL(struct usedBlockList *usedList) { usedList-&gt;head = NULL; }
+|      |                                                               ^
+|      |                                                               |
+|      |                                                               (5) ‘usedList’ could be NULL: unchecked value from (2)
+|
+buddy.c: In function ‘insert_UL’:
+buddy.c:271:9: warning: dereference of possibly-NULL ‘el’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+271 |   el-&gt;b = block;
+|   ~~~~~~^~~~~~~
+‘main’: events 1-10
+|
+|  325 | int main(int argc, char *argv[]) {
+|      |     ^~~~
+|      |     |
+|      |     (1) entry to ‘main’
+|......
+|  372 |   while (run) {
+|      |          ~~~
+|      |          |
+|      |          (2) following ‘true’ branch (when ‘run != 0’)...
+|......
+|  377 |     int n = scanf(&quot; %c&quot;, &amp;cmd);
+|      |             ~~~~~~~~~~~~~~~~~~
+|      |             |
+|      |             (3) ...to here
+|  378 |     if (n != 1) {
+|      |        ~
+|      |        |
+|      |        (4) following ‘false’ branch (when ‘n == 1’)...
+|......
+|  383 |     switch (cmd) {
+|      |     ~~~~~~
+|      |     |
+|      |     (5) ...to here
+|      |     (6) following ‘case 109:’ branch...
+|......
+|  407 |     case &apos;m&apos;: {
+|      |     ~~~~
+|      |     |
+|      |     (7) ...to here
+|......
+|  410 |       if (n != 1 || num == 0) {
+|      |          ~
+|      |          |
+|      |          (8) following ‘false’ branch...
+|......
+|  415 |       if (allocate(freeList, usedList,
+|      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |           |
+|      |           (10) calling ‘allocate’ from ‘main’
+|  416 |                    (toP2(num, blockSize) + (blockSize / 2)) / blockSize, idx,
+|      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (9) ...to here
+|  417 |                    mem)) {
+|      |                    ~~~~
+|
++--&gt; ‘allocate’: events 11-12
+|
+|  288 | int allocate(struct freeBlockList *freeList, struct usedBlockList *usedList,
+|      |     ^~~~~~~~
+|      |     |
+|      |     (11) entry to ‘allocate’
+|  289 |              unsigned int size, unsigned int idx, char *mem) {
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (12) calling ‘extract_FL’ from ‘allocate’
+|
++--&gt; ‘extract_FL’: events 13-16
+|
+|  147 | struct block *extract_FL(struct freeBlockList *freeList, unsigned int size) {
+|      |               ^~~~~~~~~~
+|      |               |
+|      |               (13) entry to ‘extract_FL’
+|  148 |   if (freeList-&gt;head == NULL || freeList-&gt;head-&gt;list-&gt;block-&gt;size &lt; size) {
+|      |      ~
+|      |      |
+|      |      (14) following ‘false’ branch...
+|......
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (15) ...to here
+|      |          (16) calling ‘gen_extract_FL’ from ‘extract_FL’
+|
++--&gt; ‘gen_extract_FL’: events 17-21
+|
+|  107 | struct block *gen_extract_FL(struct freeBlockListE **freeList,
+|      |               ^~~~~~~~~~~~~~
+|      |               |
+|      |               (17) entry to ‘gen_extract_FL’
+|......
+|  110 |   if (fl-&gt;list-&gt;block-&gt;size == size) {
+|      |      ~
+|      |      |
+|      |      (18) following ‘true’ branch...
+|  111 |     if (fl-&gt;list-&gt;next == NULL) {
+|      |        ~~~~~~~~~
+|      |        |  |
+|      |        |  (19) ...to here
+|      |        (20) following ‘true’ branch...
+|  112 |       struct block *ret = fl-&gt;list-&gt;block;
+|      |                           ~~~~~~~~
+|      |                             |
+|      |                             (21) ...to here
+|
+&lt;------+
+|
+‘extract_FL’: event 22
+|
+|  151 |   return gen_extract_FL(&amp;(freeList-&gt;head), size);
+|      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |          |
+|      |          (22) returning to ‘extract_FL’ from ‘gen_extract_FL’
+|
+&lt;------+
+|
+‘allocate’: events 23-26
+|
+|  290 |   struct block *b = extract_FL(freeList, size);
+|      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                     |
+|      |                     (23) returning to ‘allocate’ from ‘extract_FL’
+|  291 |
+|  292 |   if (b == NULL) {
+|      |      ~
+|      |      |
+|      |      (24) following ‘false’ branch (when ‘b’ is non-NULL)...
+|......
+|  295 |   setBlockTo(b, &apos;P&apos;, mem);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (25) ...to here
+|  296 |
+|  297 |   insert_UL(usedList, b, idx);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (26) calling ‘insert_UL’ from ‘allocate’
+|
++--&gt; ‘insert_UL’: events 27-29
+|
+|  267 | void insert_UL(struct usedBlockList *usedList, struct block *block,
+|      |      ^~~~~~~~~
+|      |      |
+|      |      (27) entry to ‘insert_UL’
+|......
+|  270 |       (struct usedBlockListE *)malloc(sizeof(struct usedBlockListE));
+|      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |                                |
+|      |                                (28) this call could return NULL
+|  271 |   el-&gt;b = block;
+|      |   ~~~~~~~~~~~~~
+|      |         |
+|      |         (29) ‘el’ could be NULL: unchecked value from (28)
+|
+buddy.c: In function ‘main’:
+buddy.c:358:3: warning: use of possibly-NULL ‘mem’ where non-null expected [CWE-690] [-Wanalyzer-possible-null-argument]
+358 |   memset(mem, &apos;F&apos;, numBlocks);
+|   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+‘main’: events 1-2
+|
+|  357 |   char *mem = malloc(numBlocks + 1);
+|      |               ^~~~~~~~~~~~~~~~~~~~~
+|      |               |
+|      |               (1) this call could return NULL
+|  358 |   memset(mem, &apos;F&apos;, numBlocks);
+|      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|      |   |
+|      |   (2) argument 1 (‘mem’) from (1) could be NULL where non-null expected
+|
+In file included from buddy.c:4:
+/usr/include/string.h:61:14: note: argument 1 of ‘memset’ must be non-null
+61 | extern void *memset (void *__s, int __c, size_t __n) __THROW __nonnull ((1));
 </root>
