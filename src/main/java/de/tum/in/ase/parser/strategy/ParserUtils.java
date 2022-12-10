@@ -9,6 +9,9 @@ import org.w3c.dom.Element;
  */
 class ParserUtils {
 
+    private ParserUtils() {
+    }
+
     /**
      * Extracts and parses an attribute to an int. Defaults to 0 if parsing fails.
      *

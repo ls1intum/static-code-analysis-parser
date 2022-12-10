@@ -102,7 +102,7 @@ public class GCCParser implements ParserStrategy {
         Element gccLog = doc.getDocumentElement();
         List<String> sectionsPerFunction = new ArrayList<>(Arrays.asList(gccLog.getTextContent().split(DELIM_REGEX)));
         // Do we have at least one match?
-        if (sectionsPerFunction.size() < 1) {
+        if (sectionsPerFunction.isEmpty()) {
             return;
         }
         // Remove string before first match

@@ -20,7 +20,7 @@ import de.tum.in.ase.parser.utils.XmlUtils;
 /**
  * Tests each parser with an example file
  */
-public class IntegrationTest {
+class IntegrationTest {
 
     private final static Path EXPECTED_FOLDER_PATH = Paths.get("src", "test", "java", "expected");
 
@@ -38,9 +38,10 @@ public class IntegrationTest {
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(toolReport);
 
-        BufferedReader reader = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve(expectedJSONReportFileName));
-        String expected = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        assertEquals(expected, actual);
+        try (BufferedReader reader = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve(expectedJSONReportFileName))) {
+            String expected = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            assertEquals(expected, actual);
+        }
     }
 
     /**
@@ -59,52 +60,54 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testCheckstyleParser() throws ParserException, IOException {
+    void testCheckstyleParser() throws ParserException, IOException {
         testParserWithFile("checkstyle-result.xml", "checkstyle.txt");
     }
 
     @Test
-    public void testPMDCPDParser() throws ParserException, IOException {
+    void testPMDCPDParser() throws ParserException, IOException {
         testParserWithFile("cpd.xml", "pmd_cpd.txt");
     }
 
     @Test
-    public void testPMDParser() throws ParserException, IOException {
+    void testPMDParser() throws ParserException, IOException {
         testParserWithFile("pmd.xml", "pmd.txt");
     }
 
     @Test
-    public void testSpotbugsParser() throws ParserException, IOException {
+    void testSpotbugsParser() throws ParserException, IOException {
         testParserWithFile("spotbugsXml.xml", "spotbugs.txt");
     }
 
     @Test
-    public void testSwiftlintParser() throws ParserException, IOException {
+    void testSwiftlintParser() throws ParserException, IOException {
         testParserWithFile("swiftlint-result.xml", "swiftlint.txt");
     }
 
     @Test
-    public void testGCCParser() throws ParserException, IOException {
+    void testGCCParser() throws ParserException, IOException {
         testParserWithFile("gcc.xml", "gcc.txt");
     }
 
     @Test
-    public void testParseInvalidFilename() throws ParserException, IOException {
+    void testParseInvalidFilename() throws ParserException, IOException {
         testParserWithFile("cpd_invalid.txt", "invalid_filename.txt");
     }
 
     @Test
-    public void testParseInvalidXML() throws ParserException, IOException {
+    void testParseInvalidXML() throws ParserException, IOException {
         Exception exception = assertThrows(SAXParseException.class,
                 () -> XmlUtils.createDocumentBuilder().parse(new File(REPORTS_FOLDER_PATH.resolve("invalid_xml.xml").toString())));
 
-        String expectedInvalidXML = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve("invalid_xml.txt")).readLine();
-        // JSON transform escapes quotes, so we need to escape them too
-        testParserWithString("invalid_xml.xml", String.format(expectedInvalidXML, exception.toString().replaceAll("\"", "\\\\\"")));
+        try (BufferedReader reader = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve("invalid_xml.txt"))) {
+            String expectedInvalidXML = reader.readLine();
+            // JSON transform escapes quotes, so we need to escape them too
+            testParserWithString("invalid_xml.xml", String.format(expectedInvalidXML, exception.toString().replaceAll("\"", "\\\\\"")));
+        }
     }
 
     @Test
-    public void testInvalidName() throws ParserException, IOException {
+    void testInvalidName() throws ParserException, IOException {
         testParserWithFile("invalid_name.xml", "invalid_name.txt");
     }
 }

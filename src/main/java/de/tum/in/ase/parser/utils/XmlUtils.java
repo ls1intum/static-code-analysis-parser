@@ -14,6 +14,9 @@ import org.w3c.dom.NodeList;
 
 public class XmlUtils {
 
+    private XmlUtils() {
+    }
+
     /**
      * Creates a new document builder.
      *

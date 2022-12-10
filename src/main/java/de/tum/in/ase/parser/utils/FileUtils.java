@@ -8,6 +8,9 @@ import java.util.Optional;
  */
 public class FileUtils {
 
+    private FileUtils() {
+    }
+
     /**
      * Returns true if the specified file's size is greater than the specified threshold.
      *

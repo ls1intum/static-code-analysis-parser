@@ -9,6 +9,9 @@ import de.tum.in.ase.parser.strategy.StaticCodeAnalysisTool;
 
 public class ReportUtils {
 
+    private ReportUtils() {
+    }
+
     /**
      * Creates a report which states that the specified file is too large
      * to be parsed by the parser.
