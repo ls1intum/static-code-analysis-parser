@@ -22,7 +22,8 @@ class ParserUtils {
     public static int extractInt(Element element, String attribute) {
         try {
             return Integer.parseInt(element.getAttribute(attribute));
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return 0;
         }
     }

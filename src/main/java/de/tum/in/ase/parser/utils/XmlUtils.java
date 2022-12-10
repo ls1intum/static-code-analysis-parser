@@ -70,7 +70,9 @@ public class XmlUtils {
      */
     public static Iterable<Element> getChildElements(Element parent, String name) {
         return () -> new Iterator<Element>() {
+
             final NodeList children = parent.getElementsByTagName(name != null ? name : "*");
+
             int index = skipIndirectChildren();
 
             @Override
