@@ -7,7 +7,7 @@ import de.tum.in.ase.parser.domain.Issue;
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.strategy.StaticCodeAnalysisTool;
 
-public class ReportUtils {
+public final class ReportUtils {
 
     private ReportUtils() {
     }

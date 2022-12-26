@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Utility class providing shared functionality for files
  */
-public class FileUtils {
+public final class FileUtils {
 
     private FileUtils() {
     }

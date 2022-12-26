@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 /**
  * Utility class providing shared functionality for report parsing
  */
-class ParserUtils {
+final class ParserUtils {
 
     private ParserUtils() {
     }
