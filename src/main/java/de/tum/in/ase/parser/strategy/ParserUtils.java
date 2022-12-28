@@ -7,7 +7,10 @@ import org.w3c.dom.Element;
 /**
  * Utility class providing shared functionality for report parsing
  */
-class ParserUtils {
+final class ParserUtils {
+
+    private ParserUtils() {
+    }
 
     /**
      * Extracts and parses an attribute to an int. Defaults to 0 if parsing fails.
@@ -19,7 +22,8 @@ class ParserUtils {
     public static int extractInt(Element element, String attribute) {
         try {
             return Integer.parseInt(element.getAttribute(attribute));
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return 0;
         }
     }

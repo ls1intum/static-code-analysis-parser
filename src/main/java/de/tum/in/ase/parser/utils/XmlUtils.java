@@ -12,7 +12,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class XmlUtils {
+public final class XmlUtils {
+
+    private XmlUtils() {
+    }
 
     /**
      * Creates a new document builder.
@@ -67,7 +70,9 @@ public class XmlUtils {
      */
     public static Iterable<Element> getChildElements(Element parent, String name) {
         return () -> new Iterator<Element>() {
+
             final NodeList children = parent.getElementsByTagName(name != null ? name : "*");
+
             int index = skipIndirectChildren();
 
             @Override

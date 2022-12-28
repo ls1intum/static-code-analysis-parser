@@ -6,7 +6,10 @@ import java.util.Optional;
 /**
  * Utility class providing shared functionality for files
  */
-public class FileUtils {
+public final class FileUtils {
+
+    private FileUtils() {
+    }
 
     /**
      * Returns true if the specified file's size is greater than the specified threshold.
