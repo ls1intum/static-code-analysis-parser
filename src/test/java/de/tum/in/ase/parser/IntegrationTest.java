@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXParseException;
 
+import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.ParserException;
 import de.tum.in.ase.parser.utils.XmlUtils;
+
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Tests each parser with an example file
@@ -37,9 +40,12 @@ class IntegrationTest {
 
         ReportParser parser = new ReportParser();
         String actual = parser.transformToJSONReport(toolReport);
+        Report actualReport = parser.transformToReport(toolReport);
 
         try (BufferedReader reader = Files.newBufferedReader(EXPECTED_FOLDER_PATH.resolve(expectedJSONReportFileName))) {
             String expected = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            Report expectedReport = JsonMapper.shared().readValue(expected, Report.class);
+            assertEquals(expectedReport, actualReport);
             assertEquals(expected, actual);
         }
     }

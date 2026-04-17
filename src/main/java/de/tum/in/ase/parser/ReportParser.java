@@ -5,12 +5,12 @@ import static de.tum.in.ase.parser.utils.ReportUtils.createFileTooLargeReport;
 
 import java.io.File;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.tum.in.ase.parser.domain.Report;
 import de.tum.in.ase.parser.exception.ParserException;
 import de.tum.in.ase.parser.strategy.ParserContext;
 import de.tum.in.ase.parser.utils.FileUtils;
+
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Public API for parsing of static code analysis reports
@@ -32,7 +32,7 @@ public class ReportParser {
     public String transformToJSONReport(File file) throws ParserException {
         try {
             Report report = transformToReport(file);
-            ObjectMapper mapper = new ObjectMapper();
+            JsonMapper mapper = JsonMapper.shared();
             return mapper.writeValueAsString(report);
         }
         catch (Exception e) {
