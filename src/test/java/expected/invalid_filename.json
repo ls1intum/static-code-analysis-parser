@@ -1,0 +1,1 @@
+{"issues":[{"category":"miscellaneous","filePath":"cpd_invalid.json","message":"An exception occurred during parsing the report for file cpd_invalid.json. Exception: java.lang.IllegalArgumentException: File must be xml format","rule":"ExceptionDuringParsing","startLine":1}],"tool":null}

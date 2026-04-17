@@ -1,5 +1,7 @@
 package de.tum.in.ase.parser.domain;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -104,7 +106,8 @@ public class Issue {
     public void setMessage(String message) {
         if (message == null || message.length() <= MAX_STATIC_CODE_ANALYSIS_MESSAGE_LENGTH) {
             this.message = message;
-        } else {
+        }
+        else {
             this.message = message.substring(0, MAX_STATIC_CODE_ANALYSIS_MESSAGE_LENGTH);
         }
     }
@@ -115,5 +118,42 @@ public class Issue {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Issue issue)) {
+            return false;
+        }
+
+        return Objects.equals(filePath, issue.filePath)
+                && Objects.equals(startLine, issue.startLine)
+                && Objects.equals(endLine, issue.endLine)
+                && Objects.equals(startColumn, issue.startColumn)
+                && Objects.equals(endColumn, issue.endColumn)
+                && Objects.equals(rule, issue.rule)
+                && Objects.equals(category, issue.category)
+                && Objects.equals(message, issue.message)
+                && Objects.equals(priority, issue.priority);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filePath, startLine, endLine, startColumn, endColumn, rule, category, message, priority);
+    }
+
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "filePath='" + filePath + '\'' +
+                ", startLine=" + startLine +
+                ", endLine=" + endLine +
+                ", startColumn=" + startColumn +
+                ", endColumn=" + endColumn +
+                ", rule='" + rule + '\'' +
+                ", category='" + category + '\'' +
+                ", message='" + message + '\'' +
+                ", priority='" + priority + '\'' +
+                '}';
     }
 }
